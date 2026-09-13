@@ -25,12 +25,19 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   const pathname = request.nextUrl.pathname;
   const isProtected = PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+
+  let user = null;
+  try {
+    const {
+      data: { user: fetchedUser },
+    } = await supabase.auth.getUser();
+    user = fetchedUser;
+  } catch {
+    // Supabase unreachable (misconfigured env vars, outage, etc). Fail
+    // closed on protected routes instead of crashing every request.
+  }
 
   if (isProtected && !user) {
     const redirectUrl = new URL("/login", request.url);
