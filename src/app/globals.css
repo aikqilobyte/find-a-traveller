@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+
+  --surface: #ffffff;
+  --surface-muted: #f6f8fb;
+  --border: oklch(0.922 0 0);
+
+  /* Brand blue used for primary actions throughout the marketplace */
+  --primary: oklch(0.52 0.19 264);
+  --primary-hover: oklch(0.45 0.19 264);
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* Dark navy used for the "safety" / CTA banner sections */
+  --navy: #0b1130;
+  --navy-foreground: #ffffff;
+
+  --success: #16a34a;
+  --success-bg: #ecfdf3;
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+  --error: #dc2626;
+  --error-bg: #fef2f2;
+  --info: #2563eb;
+  --info-bg: #eff6ff;
+  --pending: #7c3aed;
+  --pending-bg: #f5f3ff;
+
+  --muted-foreground: oklch(0.556 0 0);
+  --radius: 0.75rem;
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.52 0.19 264 / 0.5);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-navy: var(--navy);
+  --color-navy-foreground: var(--navy-foreground);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-error: var(--error);
+  --color-error-bg: var(--error-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-pending: var(--pending);
+  --color-pending-bg: var(--pending-bg);
+
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  --font-sans: var(--font-sans);
+}
+
+body {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
