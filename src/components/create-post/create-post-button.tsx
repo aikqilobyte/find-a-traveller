@@ -5,13 +5,13 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CreatePostModal } from "@/components/create-post/create-post-modal";
 
-export function CreatePostButton() {
+export function CreatePostButton({ label = "Create a post" }: { label?: string }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Button onClick={() => setOpen(true)}>
-        <Plus /> Create a post
+        <Plus /> {label}
       </Button>
       <CreatePostModal open={open} onOpenChange={setOpen} />
     </>

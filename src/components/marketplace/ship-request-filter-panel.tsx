@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { LocationInput } from "@/components/common/location-input";
 import { CATEGORY_FALLBACK, TRANSPORT_TYPES } from "@/lib/constants";
 
 export function ShipRequestFilterPanel() {
@@ -63,8 +64,8 @@ export function ShipRequestFilterPanel() {
 
       <div className="space-y-2">
         <Label>Location</Label>
-        <Input placeholder="Item origin country" value={from} onChange={(e) => setFrom(e.target.value)} />
-        <Input placeholder="Destination country" value={to} onChange={(e) => setTo(e.target.value)} />
+        <LocationInput value={from} onChange={setFrom} placeholder="From: country, city or airport" />
+        <LocationInput value={to} onChange={setTo} placeholder="To: country, city or airport" />
       </div>
 
       <div className="space-y-2">

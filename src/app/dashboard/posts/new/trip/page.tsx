@@ -6,7 +6,7 @@ import { CreateLuggagePostForm } from "@/components/posts/create-luggage-post-fo
 export const metadata: Metadata = { title: "Share Luggage Space" };
 
 export default async function NewLuggagePostPage() {
-  await requireProfile("/dashboard/posts/new/luggage");
+  await requireProfile("/dashboard/posts/new/trip");
   const categories = await getCategories();
 
   return (

@@ -73,7 +73,7 @@ export async function createTravellerPost(_prev: ActionResult | null, formData: 
     );
   }
 
-  revalidatePath("/available-space");
+  revalidatePath("/find-a-traveller");
   revalidatePath("/dashboard/posts");
   redirect(`/dashboard/posts/${post.id}?created=1`);
 }
@@ -84,6 +84,6 @@ export async function setTravellerPostStatus(postId: string, status: TravellerPo
   if (error) return { error: friendlyError(error.message) };
 
   revalidatePath("/dashboard/posts");
-  revalidatePath("/available-space");
+  revalidatePath("/find-a-traveller");
   return { success: true };
 }

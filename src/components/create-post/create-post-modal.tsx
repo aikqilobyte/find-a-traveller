@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Luggage, Package, Users } from "lucide-react";
+import { Package, Plane } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,30 +16,23 @@ import { cn } from "@/lib/utils";
 
 const OPTIONS = [
   {
-    value: "sharing-luggage",
-    label: "Sharing Luggage",
-    description: "Publish unused luggage space for shoppers to book.",
-    icon: Luggage,
-    href: "/dashboard/posts/new/luggage",
+    value: "travel",
+    label: "I'm travelling",
+    description: "Post your trip and the luggage space you have available.",
+    icon: Plane,
+    href: "/dashboard/posts/new/trip",
   },
   {
-    value: "ship-request",
-    label: "Ship Request",
-    description: "Ask travellers to bring an item to you.",
+    value: "send",
+    label: "I'm sending a package",
+    description: "Post what you need delivered and where it needs to go.",
     icon: Package,
-    href: "/dashboard/posts/new/ship-request",
-  },
-  {
-    value: "travel-buddy",
-    label: "Travel Buddy",
-    description: "Find someone travelling your route and dates.",
-    icon: Users,
-    href: "/dashboard/posts/new/travel-buddy",
+    href: "/dashboard/posts/new/package",
   },
 ] as const;
 
 export function CreatePostModal({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
-  const [selected, setSelected] = useState<(typeof OPTIONS)[number]["value"]>("sharing-luggage");
+  const [selected, setSelected] = useState<(typeof OPTIONS)[number]["value"]>("travel");
   const router = useRouter();
 
   return (

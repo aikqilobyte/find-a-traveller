@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Plane, Package, Handshake, Wallet, ShoppingBag, ClipboardCheck, CheckCircle2, Users } from "lucide-react";
+import { Plane, Package, Handshake, Wallet, ShoppingBag, ClipboardCheck, CheckCircle2 } from "lucide-react";
 import { requireProfile } from "@/lib/auth";
 import { getDashboardStats } from "@/lib/queries/dashboard";
 import { formatCents } from "@/lib/money";
@@ -23,7 +23,7 @@ export default async function DashboardOverviewPage() {
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-foreground">As a Traveller</h2>
           <Button asChild size="sm" variant="outline">
-            <Link href="/dashboard/posts/new/luggage">Share Space</Link>
+            <Link href="/dashboard/posts/new/trip">Post a Trip</Link>
           </Button>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -36,30 +36,19 @@ export default async function DashboardOverviewPage() {
 
       <section>
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-foreground">As a Shopper</h2>
+          <h2 className="font-semibold text-foreground">As a Sender</h2>
           <Button asChild size="sm" variant="outline">
-            <Link href="/dashboard/posts/new/ship-request">New Ship Request</Link>
+            <Link href="/dashboard/posts/new/package">Post a Package</Link>
           </Button>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <StatCard icon={ShoppingBag} label="Ship Requests" value={stats.shopper.shipRequests} />
+          <StatCard icon={ShoppingBag} label="Packages Posted" value={stats.shopper.shipRequests} />
           <StatCard icon={Package} label="Total Orders" value={stats.shopper.totalOrders} />
           <StatCard icon={ClipboardCheck} label="Active Orders" value={stats.shopper.activeOrders} />
           <StatCard icon={CheckCircle2} label="Completed Orders" value={stats.shopper.completedOrders} />
         </div>
       </section>
 
-      <section>
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-foreground">Travel Buddy</h2>
-          <Button asChild size="sm" variant="outline">
-            <Link href="/dashboard/posts/new/travel-buddy">New Travel Buddy Post</Link>
-          </Button>
-        </div>
-        <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <StatCard icon={Users} label="Active Posts" value={stats.travelBuddy.activePosts} />
-        </div>
-      </section>
     </div>
   );
 }

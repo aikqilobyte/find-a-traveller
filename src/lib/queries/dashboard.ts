@@ -12,7 +12,6 @@ export async function getDashboardStats(userId: string) {
     myOrdersAsShopper,
     activeOrders,
     completedOrders,
-    travelBuddyPosts,
   ] = await Promise.all([
     supabase.from("traveller_posts").select("id", { count: "exact", head: true }).eq("traveller_id", userId).eq("status", "active"),
     supabase.from("bookings").select("id", { count: "exact", head: true }).eq("traveller_id", userId).in("status", ["requested", "offer_pending"]),
@@ -22,7 +21,6 @@ export async function getDashboardStats(userId: string) {
     supabase.from("bookings").select("id", { count: "exact", head: true }).eq("shopper_id", userId),
     supabase.from("bookings").select("id", { count: "exact", head: true }).eq("shopper_id", userId).in("status", ["accepted", "payment_pending", "paid", "pickup_pending", "pickup_confirmed", "in_transit", "delivery_pending", "otp_pending"]),
     supabase.from("bookings").select("id", { count: "exact", head: true }).eq("shopper_id", userId).eq("status", "completed"),
-    supabase.from("travel_buddy_posts").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
   ]);
 
   const earningsCents = (completedAsTraveller.data ?? []).reduce(
@@ -42,9 +40,6 @@ export async function getDashboardStats(userId: string) {
       totalOrders: myOrdersAsShopper.count ?? 0,
       activeOrders: activeOrders.count ?? 0,
       completedOrders: completedOrders.count ?? 0,
-    },
-    travelBuddy: {
-      activePosts: travelBuddyPosts.count ?? 0,
     },
   };
 }

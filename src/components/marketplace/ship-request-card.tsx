@@ -66,10 +66,10 @@ export function ShipRequestCard({ request }: { request: ShipRequest }) {
 
       <div className="mt-4 grid grid-cols-2 gap-2">
         <Button variant="outline" asChild>
-          <Link href={`/ship-requests/${request.id}`}>View</Link>
+          <Link href={`/find-a-sender/${request.id}`}>View</Link>
         </Button>
         <Button asChild>
-          <Link href={`/ship-requests/${request.id}/offer`}>Make Offer</Link>
+          <Link href={`/find-a-sender/${request.id}/offer`}>Make Offer</Link>
         </Button>
       </div>
     </div>

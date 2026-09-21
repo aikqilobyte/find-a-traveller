@@ -21,7 +21,6 @@ export type ShipRequestStatus =
   | "completed"
   | "cancelled"
   | "expired";
-export type TravelBuddyStatus = "active" | "completed" | "cancelled";
 export type OfferStatus = "pending" | "accepted" | "rejected" | "countered" | "expired" | "cancelled";
 export type BookingStatus =
   | "requested"
@@ -120,24 +119,6 @@ export interface ShipRequest {
   updated_at: string;
   shopper?: Profile;
   categories?: Category[];
-}
-
-export interface TravelBuddyPost {
-  id: string;
-  user_id: string;
-  origin_country: string;
-  origin_city: string;
-  destination_country: string;
-  destination_city: string;
-  travel_date: string;
-  return_date: string | null;
-  transport_type: TransportType;
-  preferences: string | null;
-  description: string | null;
-  status: TravelBuddyStatus;
-  created_at: string;
-  updated_at: string;
-  user?: Profile;
 }
 
 export interface Booking {

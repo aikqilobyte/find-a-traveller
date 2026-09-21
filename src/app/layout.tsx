@@ -11,15 +11,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Find A Traveller — Trusted Travellers Make Your Shopping, Shipping & Sharing",
+    default: "Find A Traveller — Transform Transit into Trust",
     template: "%s | Find A Traveller",
   },
   description:
-    "Find A Traveller connects shoppers and travellers so you can share unused luggage space, ship items across borders, and find a travel buddy — safely and affordably.",
+    "Find A Traveller connects senders with verified travellers who have unused luggage space, so packages travel cheaper, faster and with payment protected until delivery.",
   openGraph: {
     title: "Find A Traveller",
     description:
-      "Connect with verified travellers to share luggage space, ship items, or find a travel buddy.",
+      "Send a package with a verified traveller already heading your way — or earn from luggage space you aren't using.",
     siteName: "Find A Traveller",
     type: "website",
   },

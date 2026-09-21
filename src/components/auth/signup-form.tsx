@@ -7,11 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubmitButton } from "@/components/common/submit-button";
 
-export function SignupForm() {
+export function SignupForm({ next }: { next?: string }) {
   const [state, formAction] = useActionState<ActionResult | null, FormData>(signUp, null);
 
   return (
     <form action={formAction} className="space-y-4">
+      {next && <input type="hidden" name="next" value={next} />}
       <div className="space-y-1.5">
         <Label htmlFor="fullName">Full name</Label>
         <Input id="fullName" name="fullName" placeholder="Full name (NID name preferred)" required autoComplete="name" />
@@ -41,7 +42,7 @@ export function SignupForm() {
 
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link href="/login" className="text-primary hover:underline">
+        <Link href={next ? `/login?next=${encodeURIComponent(next)}` : "/login"} className="text-primary hover:underline">
           Sign in
         </Link>
       </p>

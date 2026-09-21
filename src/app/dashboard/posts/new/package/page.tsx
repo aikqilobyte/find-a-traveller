@@ -6,7 +6,7 @@ import { CreateShipRequestForm } from "@/components/posts/create-ship-request-fo
 export const metadata: Metadata = { title: "New Ship Request" };
 
 export default async function NewShipRequestPage() {
-  await requireProfile("/dashboard/posts/new/ship-request");
+  await requireProfile("/dashboard/posts/new/package");
   const categories = await getCategories();
 
   return (

@@ -11,7 +11,7 @@ import { EmptyState } from "@/components/common/empty-state";
 import { searchTravellerPosts, type TravellerPostFilters } from "@/lib/queries/traveller-posts";
 import { PackageSearch } from "lucide-react";
 
-export const metadata: Metadata = { title: "Available Space" };
+export const metadata: Metadata = { title: "Find a Traveller" };
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
@@ -35,14 +35,14 @@ export default async function AvailableSpacePage({
         <section className="bg-surface-muted">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center sm:px-6 lg:px-8">
             <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
-              Explore the easiest way to <span className="text-primary">shop, send, or share luggage</span>
+              Find a traveller heading <span className="text-primary">your way</span>
             </h1>
           </div>
         </section>
 
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <MarketplaceTabs active="/available-space" />
+            <MarketplaceTabs active="/find-a-traveller" />
             <div className="flex items-center gap-2">
               <MobileFilterDrawer>
                 <TravellerFilterPanel />

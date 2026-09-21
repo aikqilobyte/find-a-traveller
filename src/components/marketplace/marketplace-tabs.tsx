@@ -2,9 +2,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const TABS = [
-  { href: "/available-space", label: "Available Space" },
-  { href: "/ship-requests", label: "Ship Requests" },
-  { href: "/travel-buddy", label: "Travel Buddy" },
+  { href: "/find-a-sender", label: "Explore as Traveller" },
+  { href: "/find-a-traveller", label: "Explore as Sender" },
 ];
 
 export function MarketplaceTabs({ active }: { active: string }) {

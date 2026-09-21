@@ -32,15 +32,3 @@ export const createShipRequestSchema = z.object({
   notes: z.string().optional(),
   categoryIds: z.array(z.string().uuid()).default([]),
 });
-
-export const createTravelBuddyPostSchema = z.object({
-  originCountry: z.string().min(2),
-  originCity: z.string().min(1),
-  destinationCountry: z.string().min(2),
-  destinationCity: z.string().min(1),
-  travelDate: z.string().min(1, "Select a travel date"),
-  returnDate: z.string().optional(),
-  transportType: z.enum(["plane", "train", "bus", "car"]),
-  preferences: z.string().optional(),
-  description: z.string().optional(),
-});

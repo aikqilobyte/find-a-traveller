@@ -1,11 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
+import { buildLocationOrFilter } from "@/lib/queries/location-filter";
 import type { TravellerPost } from "@/lib/types/database";
 
 export interface TravellerPostFilters {
   from?: string;
   to?: string;
+  /** Earliest acceptable departure date. */
+  fromDate?: string;
+  /** Latest acceptable departure date. */
+  toDate?: string;
   departureDate?: string;
-  returnDate?: string;
   weight?: string;
   category?: string;
   tripType?: string;
@@ -32,9 +36,16 @@ export async function searchTravellerPosts(filters: TravellerPostFilters) {
     .eq("status", "active")
     .gte("departure_date", new Date().toISOString().slice(0, 10));
 
-  if (filters.from) query = query.ilike("origin_country", `%${filters.from}%`);
-  if (filters.to) query = query.ilike("destination_country", `%${filters.to}%`);
+  const originFilter = filters.from ? buildLocationOrFilter(filters.from, "origin_city", "origin_country") : null;
+  const destinationFilter = filters.to
+    ? buildLocationOrFilter(filters.to, "destination_city", "destination_country")
+    : null;
+  if (originFilter) query = query.or(originFilter);
+  if (destinationFilter) query = query.or(destinationFilter);
+
   if (filters.departureDate) query = query.eq("departure_date", filters.departureDate);
+  if (filters.fromDate) query = query.gte("departure_date", filters.fromDate);
+  if (filters.toDate) query = query.lte("departure_date", filters.toDate);
   if (filters.weight) query = query.gte("remaining_capacity_kg", Number(filters.weight));
   if (filters.tripType) query = query.eq("trip_type", filters.tripType);
   if (filters.transport) query = query.in("transport_type", filters.transport.split(","));

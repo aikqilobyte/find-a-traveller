@@ -40,7 +40,7 @@ export async function createOfferOnShipRequest(
     return { error: friendlyError(error.message) };
   }
 
-  revalidatePath("/ship-requests");
+  revalidatePath("/find-a-sender");
   redirect(`/dashboard/offers/${(data as { id: string }).id}?created=1`);
 }
 

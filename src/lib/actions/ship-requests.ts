@@ -69,7 +69,7 @@ export async function createShipRequest(_prev: ActionResult | null, formData: Fo
     );
   }
 
-  revalidatePath("/ship-requests");
+  revalidatePath("/find-a-sender");
   revalidatePath("/dashboard/posts");
   redirect(`/dashboard/posts/ship-requests/${request.id}?created=1`);
 }

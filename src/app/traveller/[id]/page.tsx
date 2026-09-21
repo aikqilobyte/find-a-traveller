@@ -35,7 +35,7 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
       <Navbar />
       <main className="flex-1 bg-surface-muted/40">
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-          <Link href="/available-space" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <Link href="/find-a-traveller" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="size-4" /> Back to explore
           </Link>
 

@@ -47,7 +47,7 @@ export async function createLuggageBooking(
     return { error: friendlyError(error.message) };
   }
 
-  revalidatePath("/available-space");
+  revalidatePath("/find-a-traveller");
   redirect(`/dashboard/orders/${(data as { id: string }).id}?created=1`);
 }
 

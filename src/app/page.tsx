@@ -6,53 +6,43 @@ import { Footer } from "@/components/layout/footer";
 import { HeroSearch } from "@/components/marketing/hero-search";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import { getDictionary } from "@/lib/i18n";
 import { TravellerCard } from "@/components/marketplace/traveller-card";
 import type { TravellerPost } from "@/lib/types/database";
 
-const SERVICES = [
-  {
-    title: "Ship & Shop",
-    description: "Help others get products from different countries while earning.",
-    href: "/ship-requests",
-  },
-  {
-    title: "Luggage Sharing",
-    description: "Monetize your unused luggage space on every trip you take.",
-    href: "/available-space",
-  },
-  {
-    title: "Travel Buddy",
-    description: "Meet like-minded travellers and explore together.",
-    href: "/travel-buddy",
-  },
-];
-
-const SAFETY_FEATURES = [
-  {
-    icon: ShieldCheck,
-    title: "Identity Verification",
-    description: "Tell us what you need, from where, and when you want it delivered.",
-  },
-  {
-    icon: KeyRound,
-    title: "Secure Payment",
-    description: "Get matched with a verified traveller and pay securely through our system.",
-  },
-  {
-    icon: MessageSquareText,
-    title: "Review System",
-    description: "Your traveller brings the item to you — track your order and stay in touch until it arrives.",
-  },
-];
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const { data: featuredPosts } = await supabase
-    .from("traveller_posts")
-    .select("*, traveller:profiles(*)")
-    .eq("status", "active")
-    .order("created_at", { ascending: false })
-    .limit(4);
+  const [t, { data: featuredPosts }] = await Promise.all([
+    getDictionary(),
+    supabase
+      .from("traveller_posts")
+      .select("*, traveller:profiles(*)")
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .limit(4),
+  ]);
+
+  const services = [
+    {
+      title: t.home.sendingTitle,
+      description: t.home.sendingBody,
+      cta: t.home.sendingCta,
+      href: "/find-a-traveller",
+    },
+    {
+      title: t.home.travellingTitle,
+      description: t.home.travellingBody,
+      cta: t.home.travellingCta,
+      href: "/find-a-sender",
+    },
+  ];
+
+  const safetyFeatures = [
+    { icon: ShieldCheck, title: t.home.identityTitle, description: t.home.identityBody },
+    { icon: KeyRound, title: t.home.paymentTitle, description: t.home.paymentBody },
+    { icon: MessageSquareText, title: t.home.reviewTitle, description: t.home.reviewBody },
+  ];
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -62,14 +52,11 @@ export default async function HomePage() {
         <section className="bg-surface-muted">
           <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 lg:px-8">
             <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              Trusted Travellers Make Your <span className="text-primary">Shopping, Shipping &amp; Sharing</span>
+              {t.home.heroTitle} <span className="text-primary">{t.home.heroTitleAccent}</span>
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              Whether you need to shop, send, receive, share luggage, or find a travel buddy, locally or
-              globally — we&apos;ll connect you with a verified, trusted traveller.
-            </p>
+            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">{t.home.heroSubtitle}</p>
             <div className="mt-8">
-              <HeroSearch />
+              <HeroSearch t={t.search} />
             </div>
           </div>
         </section>
@@ -77,20 +64,17 @@ export default async function HomePage() {
         {/* What will you get */}
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-semibold text-foreground">What will you get from us?</h2>
-            <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-              Get access to a smart travel network where you can earn by sharing luggage, receive products
-              through trusted travellers, and connect with travel buddies.
-            </p>
+            <h2 className="text-3xl font-semibold text-foreground">{t.home.howItWorks}</h2>
+            <p className="mx-auto mt-2 max-w-xl text-muted-foreground">{t.home.howItWorksSubtitle}</p>
           </div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-3">
-            {SERVICES.map((service) => (
+          <div className="mx-auto mt-10 grid max-w-3xl gap-6 sm:grid-cols-2">
+            {services.map((service) => (
               <div key={service.title} className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-foreground">{service.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{service.description}</p>
                 <Button asChild className="mt-5 w-full">
                   <Link href={service.href}>
-                    Get Started <ArrowRight />
+                    {service.cta} <ArrowRight />
                   </Link>
                 </Button>
               </div>
@@ -102,14 +86,12 @@ export default async function HomePage() {
         <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-3xl bg-navy px-6 py-14 text-center text-navy-foreground sm:px-14">
             <h2 className="text-3xl font-semibold">
-              Your <span className="text-primary">safety</span> is our priority
+              {t.home.safetyTitle} <span className="text-primary">{t.home.safetyTitleAccent}</span>{" "}
+              {t.home.safetyTitleEnd}
             </h2>
-            <p className="mx-auto mt-2 max-w-xl text-navy-foreground/70">
-              Advanced verification, secure payments, and comprehensive insurance make every transaction
-              safe and worry-free.
-            </p>
+            <p className="mx-auto mt-2 max-w-xl text-navy-foreground/70">{t.home.safetySubtitle}</p>
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
-              {SAFETY_FEATURES.map((feature) => (
+              {safetyFeatures.map((feature) => (
                 <div key={feature.title} className="rounded-xl bg-white/5 p-5 text-left">
                   <feature.icon className="size-8 rounded-full bg-primary/20 p-1.5 text-primary" />
                   <h3 className="mt-3 font-semibold">{feature.title}</h3>
@@ -120,38 +102,27 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Luggage sharing feature */}
+        {/* Traveller feature */}
         <FeatureRow
-          eyebrow="Luggage Sharing"
+          eyebrow="For Travellers"
           title="Need Extra Bag Space?"
-          description="Whether you're a frequent flyer or occasional traveller, Find A Traveller helps you maximize your travel experience while earning extra income."
-          bullets={["Save on Shipping", "Trusted & Secure", "Fast & Flexible"]}
-          cta={{ label: "Register As Traveller", href: "/signup" }}
+          description="Whether you're a frequent flyer or an occasional traveller, Find A Traveller turns the luggage allowance you aren't using into extra income on trips you're already taking."
+          bullets={["Earn on every trip", "Verified senders only", "You choose what you carry"]}
+          cta={{ label: "Post Your Trip", href: "/dashboard/posts/new/trip" }}
           imageSrc="https://images.unsplash.com/photo-1553531384-cc64ac80f931?q=80&w=1200&auto=format&fit=crop"
           imageAlt="Traveller handing over luggage"
         />
 
-        {/* Ship & shop feature */}
+        {/* Sender feature */}
         <FeatureRow
           reverse
-          eyebrow="Item Delivery"
+          eyebrow="For Senders"
           title="Send With Peace of Mind"
-          description="Get products from anywhere in the world, delivered by real travellers already heading your way — faster and cheaper than traditional couriers."
-          bullets={["Faster Shipping", "Save Money", "Border Access"]}
-          cta={{ label: "Register As Shopper", href: "/signup" }}
+          description="Get your package delivered by a real traveller already heading your way — faster and cheaper than traditional couriers, with your payment protected until it arrives."
+          bullets={["Faster than courier", "Save money", "Payment held until delivery"]}
+          cta={{ label: "Post Your Package", href: "/dashboard/posts/new/package" }}
           imageSrc="https://images.unsplash.com/photo-1607344645866-009c320b63e0?q=80&w=1200&auto=format&fit=crop"
           imageAlt="Courier holding a package"
-        />
-
-        {/* Travel buddy feature */}
-        <FeatureRow
-          eyebrow="Travel Buddy"
-          title="Never Travel Alone Again."
-          description="Find people travelling your route and dates. Meet new people, stay safe, and make your trip more affordable and enjoyable."
-          bullets={["Earn money", "Meet New People", "Affordable Travel"]}
-          cta={{ label: "Register As Traveller", href: "/signup" }}
-          imageSrc="https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=1200&auto=format&fit=crop"
-          imageAlt="Traveller smiling with luggage"
         />
 
         {/* Marketplace preview */}
@@ -172,7 +143,7 @@ export default async function HomePage() {
               </div>
               <div className="mt-8 text-center">
                 <Button asChild size="lg">
-                  <Link href="/available-space">
+                  <Link href="/find-a-traveller">
                     Explore All <ArrowRight />
                   </Link>
                 </Button>

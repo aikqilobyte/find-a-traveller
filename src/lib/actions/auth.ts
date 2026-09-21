@@ -37,7 +37,10 @@ export async function signUp(_prev: ActionResult | null, formData: FormData): Pr
     return { error: error.message };
   }
 
-  redirect("/login?confirm=1");
+  const next = formData.get("next");
+  const nextParam =
+    typeof next === "string" && next.startsWith("/") ? `&next=${encodeURIComponent(next)}` : "";
+  redirect(`/login?confirm=1${nextParam}`);
 }
 
 export async function signIn(_prev: ActionResult | null, formData: FormData): Promise<ActionResult> {

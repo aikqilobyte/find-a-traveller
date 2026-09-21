@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { createLuggageBooking } from "@/lib/actions/bookings";
 import type { ActionResult } from "@/lib/actions/bookings";
 import { Input } from "@/components/ui/input";
@@ -12,7 +14,15 @@ import { estimateFees } from "@/lib/fees";
 import { formatCents } from "@/lib/money";
 import type { Category, TravellerPost } from "@/lib/types/database";
 
-export function BookingForm({ post, categories }: { post: TravellerPost; categories: Category[] }) {
+export function BookingForm({
+  post,
+  categories,
+  isGuest = false,
+}: {
+  post: TravellerPost;
+  categories: Category[];
+  isGuest?: boolean;
+}) {
   const [state, formAction] = useActionState<ActionResult | null, FormData>(createLuggageBooking, null);
   const [weightKg, setWeightKg] = useState<number>(Math.min(1, post.remaining_capacity_kg));
   const [categoryId, setCategoryId] = useState<string>("");
@@ -115,9 +125,17 @@ export function BookingForm({ post, categories }: { post: TravellerPost; categor
         </p>
       )}
 
-      <SubmitButton className="w-full" size="lg" pendingText="Submitting request...">
-        Book Space
-      </SubmitButton>
+      {isGuest ? (
+        <Button asChild size="lg" className="w-full">
+          <Link href={`/login?next=${encodeURIComponent(`/traveller/${post.id}/book`)}`}>
+            Sign in to book this space
+          </Link>
+        </Button>
+      ) : (
+        <SubmitButton className="w-full" size="lg" pendingText="Submitting request...">
+          Book Space
+        </SubmitButton>
+      )}
       <p className="text-center text-xs text-muted-foreground">You won&apos;t be charged until your booking is confirmed.</p>
     </form>
   );

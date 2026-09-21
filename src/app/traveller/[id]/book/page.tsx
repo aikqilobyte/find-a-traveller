@@ -12,18 +12,19 @@ import { getCategories } from "@/lib/queries/categories";
 import { getReviewsForUser } from "@/lib/queries/reviews";
 import { ReviewCard } from "@/components/reviews/review-card";
 import { EmptyState } from "@/components/common/empty-state";
-import { requireProfile } from "@/lib/auth";
+import { getCurrentProfile } from "@/lib/auth";
+import { SignInGate } from "@/components/common/sign-in-gate";
 import { formatCents } from "@/lib/money";
 
 export const metadata: Metadata = { title: "Book Space" };
 
 export default async function BookSpacePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const profile = await requireProfile(`/traveller/${id}/book`);
+  const profile = await getCurrentProfile();
   const [post, categories] = await Promise.all([getTravellerPostById(id), getCategories()]);
   if (!post) notFound();
 
-  const isOwnPost = post.traveller_id === profile.id;
+  const isOwnPost = post.traveller_id === profile?.id;
   const reviews = await getReviewsForUser(post.traveller_id, 3);
   const traveller = post.traveller!;
 
@@ -93,7 +94,10 @@ export default async function BookSpacePage({ params }: { params: Promise<{ id: 
                   This listing isn&apos;t accepting bookings right now.
                 </div>
               ) : (
-                <BookingForm post={post} categories={categories} />
+                <div className="space-y-4">
+                  {!profile && <SignInGate next={`/traveller/${id}/book`} action="send a booking request" />}
+                  <BookingForm post={post} categories={categories} isGuest={!profile} />
+                </div>
               )}
             </div>
           </div>

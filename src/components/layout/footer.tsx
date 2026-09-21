@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Plane } from "lucide-react";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
+import { Logo } from "@/components/layout/logo";
 
 export function Footer() {
   return (
@@ -16,10 +16,7 @@ export function Footer() {
 
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
         <div className="md:col-span-2">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-foreground">
-            <Plane className="size-5 text-primary" />
-            Find a <span className="text-primary">Traveller</span>
-          </Link>
+          <Logo />
           <p className="mt-3 max-w-sm text-sm text-muted-foreground">
             We help you find trusted travellers to bring your items from abroad. Simple, secure, and
             community-powered.
@@ -30,7 +27,8 @@ export function Footer() {
           <p className="text-sm font-semibold text-primary">Company</p>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             <li><Link href="/about" className="hover:text-primary">About</Link></li>
-            <li><Link href="/available-space" className="hover:text-primary">Explore Posts</Link></li>
+            <li><Link href="/find-a-traveller" className="hover:text-primary">Explore as Sender</Link></li>
+            <li><Link href="/find-a-sender" className="hover:text-primary">Explore as Traveller</Link></li>
             <li><Link href="/about#contact" className="hover:text-primary">Contact us</Link></li>
           </ul>
         </div>

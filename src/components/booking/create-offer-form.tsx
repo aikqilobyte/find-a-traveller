@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { createOfferOnShipRequest } from "@/lib/actions/offers";
 import type { ActionResult } from "@/lib/actions/bookings";
 import { Input } from "@/components/ui/input";
@@ -9,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SubmitButton } from "@/components/common/submit-button";
 import type { ShipRequest } from "@/lib/types/database";
 
-export function CreateOfferForm({ request }: { request: ShipRequest }) {
+export function CreateOfferForm({ request, isGuest = false }: { request: ShipRequest; isGuest?: boolean }) {
   const [state, formAction] = useActionState<ActionResult | null, FormData>(createOfferOnShipRequest, null);
 
   return (
@@ -61,9 +63,17 @@ export function CreateOfferForm({ request }: { request: ShipRequest }) {
         </p>
       )}
 
-      <SubmitButton className="w-full" pendingText="Sending offer...">
-        Send Offer
-      </SubmitButton>
+      {isGuest ? (
+        <Button asChild className="w-full">
+          <Link href={`/login?next=${encodeURIComponent(`/find-a-sender/${request.id}/offer`)}`}>
+            Sign in to send this offer
+          </Link>
+        </Button>
+      ) : (
+        <SubmitButton className="w-full" pendingText="Sending offer...">
+          Send Offer
+        </SubmitButton>
+      )}
     </form>
   );
 }

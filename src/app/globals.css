@@ -11,13 +11,13 @@
   --surface-muted: #f6f8fb;
   --border: oklch(0.922 0 0);
 
-  /* Brand blue used for primary actions throughout the marketplace */
-  --primary: oklch(0.52 0.19 264);
-  --primary-hover: oklch(0.45 0.19 264);
-  --primary-foreground: oklch(0.985 0 0);
+  /* Brand blues, sampled from the Find A Traveller logo mark */
+  --primary: #0b62b8;
+  --primary-hover: #084e93;
+  --primary-foreground: #ffffff;
 
-  /* Dark navy used for the "safety" / CTA banner sections */
-  --navy: #0b1130;
+  /* Deep brand navy used for the "safety" / CTA banner sections */
+  --navy: #042a5c;
   --navy-foreground: #ffffff;
 
   --success: #16a34a;
@@ -44,7 +44,7 @@
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.52 0.19 264 / 0.5);
+  --ring: color-mix(in oklch, #0b62b8 50%, transparent);
 }
 
 @theme inline {

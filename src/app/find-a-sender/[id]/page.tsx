@@ -31,7 +31,7 @@ export default async function ShipRequestDetailPage({ params }: { params: Promis
       <Navbar />
       <main className="flex-1 bg-surface-muted/40">
         <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-          <Link href="/ship-requests" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <Link href="/find-a-sender" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="size-4" /> Back to explore
           </Link>
 
@@ -89,7 +89,7 @@ export default async function ShipRequestDetailPage({ params }: { params: Promis
             )}
 
             <Button asChild size="lg" className="mt-6 w-full">
-              <Link href={`/ship-requests/${request.id}/offer`}>Make Offer</Link>
+              <Link href={`/find-a-sender/${request.id}/offer`}>Make Offer</Link>
             </Button>
           </div>
         </div>
