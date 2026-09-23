@@ -110,7 +110,7 @@ export default async function HomePage() {
         <FeatureRow
           reverse
           eyebrow="For Receivers"
-          title="Send With Peace of Mind"
+          title="Receive with Peace of Mind"
           description="Get your package delivered by a real traveller already heading your way — faster and cheaper than traditional couriers, with your payment protected until it arrives."
           bullets={["Faster than courier", "Save money", "Payment held until delivery"]}
           cta={{ label: "Post Your Package", href: "/dashboard/posts/new/package" }}
