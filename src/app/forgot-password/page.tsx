@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
+import { getDictionary } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Forgot Password" };
 
-export default function ForgotPasswordPage() {
+export default async function ForgotPasswordPage() {
+  const t = await getDictionary();
   return (
-    <AuthShell title="Forgot your password?" subtitle="We'll email you a link to reset it.">
+    <AuthShell title={t.auth.forgotTitle} subtitle={t.auth.forgotSubtitle}>
       <ForgotPasswordForm />
     </AuthShell>
   );

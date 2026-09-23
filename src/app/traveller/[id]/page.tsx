@@ -1,3 +1,5 @@
+import { FEATURES } from "@/lib/features";
+import { ComingSoon } from "@/components/common/coming-soon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -22,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return { title: `${post.origin_city} to ${post.destination_city} — Available Space` };
 }
 
-export default async function TravellerDetailPage({ params }: { params: Promise<{ id: string }> }) {
+async function TravellerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const post = await getTravellerPostById(id);
   if (!post) notFound();
@@ -164,4 +166,16 @@ function Info({ label, value, className }: { label: string; value: string; class
       <p className={`font-semibold text-foreground ${className ?? ""}`}>{value}</p>
     </div>
   );
+}
+
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+  if (!FEATURES.bagSpaceMarketplace) {
+    return (
+      <ComingSoon
+        title="Extra bag space is coming soon"
+        description="We're launching with package delivery first. Renting a traveller's spare luggage space will follow shortly."
+      />
+    );
+  }
+  return <TravellerDetailPage {...props} />;
 }

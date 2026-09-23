@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { FEATURES } from "@/lib/features";
 
 // Two entry points, matching the flow diagram: a sender looks for a
 // traveller, a traveller looks for a sender.
@@ -26,7 +27,9 @@ export function ExploreMenu({
 }) {
   const links = [
     { href: "/find-a-sender", label: travellerLabel, description: travellerHint, icon: Package },
-    { href: "/find-a-traveller", label: senderLabel, description: senderHint, icon: Plane },
+    ...(FEATURES.bagSpaceMarketplace
+      ? [{ href: "/find-a-traveller", label: senderLabel, description: senderHint, icon: Plane }]
+      : []),
   ];
 
   return (

@@ -7,11 +7,11 @@ import { MobileFilterDrawer } from "@/components/marketplace/mobile-filter-drawe
 import { SortSelect } from "@/components/marketplace/sort-select";
 import { ShipRequestCard } from "@/components/marketplace/ship-request-card";
 import { PaginationBar } from "@/components/common/pagination-bar";
-import { EmptyState } from "@/components/common/empty-state";
+import { NoResults } from "@/components/common/no-results";
 import { searchShipRequests, type ShipRequestFilters } from "@/lib/queries/ship-requests";
-import { PackageSearch } from "lucide-react";
+import { getDictionary } from "@/lib/i18n";
 
-export const metadata: Metadata = { title: "Find a Sender" };
+export const metadata: Metadata = { title: "Browse Packages" };
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
@@ -25,7 +25,7 @@ export default async function ShipRequestsPage({
 }: {
   searchParams: Promise<ShipRequestFilters>;
 }) {
-  const filters = await searchParams;
+  const [filters, t] = await Promise.all([searchParams, getDictionary()]);
   const { requests, total, page, pageSize } = await searchShipRequests(filters);
 
   return (
@@ -35,7 +35,7 @@ export default async function ShipRequestsPage({
         <section className="bg-surface-muted">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center sm:px-6 lg:px-8">
             <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
-              Find a package to carry <span className="text-primary">on your trip</span>
+              {t.marketplace.findSenderTitle} <span className="text-primary">{t.marketplace.findSenderAccent}</span>
             </h1>
           </div>
         </section>
@@ -58,10 +58,9 @@ export default async function ShipRequestsPage({
 
             <div>
               {requests.length === 0 ? (
-                <EmptyState
-                  icon={PackageSearch}
-                  title="No ship requests found"
-                  description="Try adjusting your filters, or check back soon as new requests are posted daily."
+                <NoResults
+                  title={t.marketplace.noSenders}
+                  description={t.marketplace.noSendersHint}
                 />
               ) : (
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">

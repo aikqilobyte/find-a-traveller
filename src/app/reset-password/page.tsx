@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { ResetPasswordForm } from "@/components/auth/reset-password-form";
+import { getDictionary } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Reset Password" };
 
-export default function ResetPasswordPage() {
+export default async function ResetPasswordPage() {
+  const t = await getDictionary();
   return (
-    <AuthShell title="Choose a new password" subtitle="Make sure it's at least 8 characters.">
+    <AuthShell title={t.auth.resetTitle} subtitle={t.auth.resetSubtitle}>
       <ResetPasswordForm />
     </AuthShell>
   );

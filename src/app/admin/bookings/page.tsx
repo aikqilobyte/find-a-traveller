@@ -17,7 +17,7 @@ export default async function AdminBookingsPage() {
           <thead className="border-b border-border text-left text-xs text-muted-foreground">
             <tr>
               <th className="p-4">Booking</th>
-              <th className="p-4">Shopper</th>
+              <th className="p-4">Receiver</th>
               <th className="p-4">Traveller</th>
               <th className="p-4">Total</th>
               <th className="p-4">Status</th>

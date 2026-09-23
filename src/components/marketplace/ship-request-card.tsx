@@ -1,30 +1,21 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { Heart } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { RatingStars } from "@/components/marketplace/rating-stars";
+import { PartyIdentity } from "@/components/common/party-identity";
 import { formatCents } from "@/lib/money";
 import type { ShipRequest } from "@/lib/types/database";
 
 export function ShipRequestCard({ request }: { request: ShipRequest }) {
   const shopper = request.shopper;
-  const initials = shopper?.full_name?.slice(0, 2).toUpperCase() ?? "SH";
 
   return (
     <div className="flex flex-col rounded-2xl border border-border bg-surface p-5 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex items-start justify-between">
-        <div className="flex items-center gap-2">
-          <Avatar className="size-9">
-            <AvatarImage src={shopper?.avatar_url ?? undefined} />
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="text-sm font-semibold text-foreground">{shopper?.display_name ?? shopper?.full_name ?? "Shopper"}</p>
-            <RatingStars rating={shopper?.average_rating ?? 0} reviews={shopper?.total_reviews ?? 0} />
-          </div>
-        </div>
+        {/* Browsing happens before any booking exists, so the receiver is
+            always anonymous here. */}
+        <PartyIdentity profile={shopper} revealed={false} />
         <Heart className="size-4 text-muted-foreground" />
       </div>
 

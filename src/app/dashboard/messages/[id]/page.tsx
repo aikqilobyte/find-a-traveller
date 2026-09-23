@@ -11,19 +11,22 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
   const { id } = await params;
   const profile = await requireProfile(`/dashboard/messages/${id}`);
 
-  const conversation = await getConversationById(id);
-  if (!conversation) notFound();
-
   const supabase = await createClient();
-  const { data: participant } = await supabase
-    .from("conversation_participants")
-    .select("user_id")
-    .eq("conversation_id", id)
-    .eq("user_id", profile.id)
-    .maybeSingle();
-  if (!participant) notFound();
 
-  const messages = await getMessagesForConversation(id);
+  // Membership check, conversation and messages are independent lookups —
+  // fetch together, then authorise before rendering anything.
+  const [conversation, { data: participant }, messages] = await Promise.all([
+    getConversationById(id),
+    supabase
+      .from("conversation_participants")
+      .select("user_id")
+      .eq("conversation_id", id)
+      .eq("user_id", profile.id)
+      .maybeSingle(),
+    getMessagesForConversation(id),
+  ]);
+
+  if (!conversation || !participant) notFound();
 
   return (
     <div className="mx-auto max-w-2xl">

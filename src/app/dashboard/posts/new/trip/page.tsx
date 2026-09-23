@@ -1,3 +1,5 @@
+import { FEATURES } from "@/lib/features";
+import { ComingSoon } from "@/components/common/coming-soon";
 import type { Metadata } from "next";
 import { requireProfile } from "@/lib/auth";
 import { getCategories } from "@/lib/queries/categories";
@@ -5,7 +7,7 @@ import { CreateLuggagePostForm } from "@/components/posts/create-luggage-post-fo
 
 export const metadata: Metadata = { title: "Share Luggage Space" };
 
-export default async function NewLuggagePostPage() {
+async function NewLuggagePostPage() {
   await requireProfile("/dashboard/posts/new/trip");
   const categories = await getCategories();
 
@@ -20,4 +22,16 @@ export default async function NewLuggagePostPage() {
       </div>
     </div>
   );
+}
+
+export default async function Page() {
+  if (!FEATURES.bagSpaceMarketplace) {
+    return (
+      <ComingSoon
+        title="Posting a trip is coming soon"
+        description="We're launching with package delivery first. Listing your spare luggage space will follow shortly."
+      />
+    );
+  }
+  return <NewLuggagePostPage />;
 }

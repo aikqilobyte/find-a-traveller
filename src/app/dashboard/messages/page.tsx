@@ -6,7 +6,7 @@ import { getConversationsForUser } from "@/lib/queries/conversations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/common/empty-state";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, UserRound } from "lucide-react";
 
 export const metadata: Metadata = { title: "Messages" };
 
@@ -28,14 +28,22 @@ export default async function MessagesPage() {
               href={`/dashboard/messages/${conversation.id}`}
               className="flex items-center gap-3 p-4 hover:bg-surface-muted"
             >
-              <Avatar>
-                <AvatarImage src={conversation.otherParticipant?.avatar_url ?? undefined} />
-                <AvatarFallback>{conversation.otherParticipant?.full_name.slice(0, 2).toUpperCase() ?? "?"}</AvatarFallback>
-              </Avatar>
+              {conversation.identityRevealed ? (
+                <Avatar>
+                  <AvatarImage src={conversation.otherParticipant?.avatar_url ?? undefined} />
+                  <AvatarFallback>{conversation.otherParticipant?.full_name.slice(0, 2).toUpperCase() ?? "?"}</AvatarFallback>
+                </Avatar>
+              ) : (
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-muted text-muted-foreground">
+                  <UserRound className="size-5" />
+                </span>
+              )}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between">
                   <p className="truncate text-sm font-semibold text-foreground">
-                    {conversation.otherParticipant?.full_name ?? "User"}
+                    {conversation.identityRevealed
+                      ? (conversation.otherParticipant?.full_name ?? "User")
+                      : "Anonymous"}
                   </p>
                   {conversation.lastMessage && (
                     <span className="text-xs text-muted-foreground">

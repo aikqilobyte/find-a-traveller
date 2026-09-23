@@ -12,23 +12,24 @@ import {
   UserRound,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-const LINKS = [
-  { href: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
-  { href: "/dashboard/posts", label: "My Posts", icon: Package },
-  { href: "/dashboard/orders", label: "My Orders", icon: ClipboardList },
-  { href: "/dashboard/offers", label: "Offers", icon: Handshake },
-  { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },
-  { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
-  { href: "/dashboard/profile", label: "Profile", icon: UserRound },
+const links = (t: Dictionary["dashboard"]) => [
+  { href: "/dashboard", label: t.overview, icon: LayoutDashboard, exact: true },
+  { href: "/dashboard/posts", label: t.myPosts, icon: Package },
+  { href: "/dashboard/orders", label: t.myOrders, icon: ClipboardList },
+  { href: "/dashboard/offers", label: t.offers, icon: Handshake },
+  { href: "/dashboard/messages", label: t.messages, icon: MessageSquare },
+  { href: "/dashboard/notifications", label: t.notifications, icon: Bell },
+  { href: "/dashboard/profile", label: t.profile, icon: UserRound },
 ];
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ t }: { t: Dictionary["dashboard"] }) {
   const pathname = usePathname();
 
   return (
     <nav className="flex gap-1 overflow-x-auto lg:w-56 lg:flex-col lg:overflow-visible">
-      {LINKS.map((link) => {
+      {links(t).map((link) => {
         const active = link.exact ? pathname === link.href : pathname.startsWith(link.href);
         return (
           <Link

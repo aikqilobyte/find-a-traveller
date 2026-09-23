@@ -5,10 +5,9 @@ import { format } from "date-fns";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { RatingStars } from "@/components/marketplace/rating-stars";
+import { PartyIdentity, IdentityHiddenNote } from "@/components/common/party-identity";
 import { getShipRequestById } from "@/lib/queries/ship-request-detail";
 import { formatCents } from "@/lib/money";
 
@@ -36,17 +35,11 @@ export default async function ShipRequestDetailPage({ params }: { params: Promis
           </Link>
 
           <div className="mt-4 rounded-2xl border border-border bg-surface p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Avatar className="size-11">
-                  <AvatarImage src={shopper.avatar_url ?? undefined} />
-                  <AvatarFallback>{shopper.full_name.slice(0, 2).toUpperCase()}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-semibold text-foreground">{shopper.display_name ?? shopper.full_name}</p>
-                  <RatingStars rating={shopper.average_rating} reviews={shopper.total_reviews} />
-                </div>
-              </div>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              {/* No booking exists at browse time, so the receiver stays
+                  anonymous until this deal is agreed and paid for. */}
+              <PartyIdentity profile={shopper} revealed={false} />
+              <IdentityHiddenNote className="max-w-xs" />
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">

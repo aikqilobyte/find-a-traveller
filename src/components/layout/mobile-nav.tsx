@@ -9,6 +9,7 @@ import { Logo } from "@/components/layout/logo";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { signOut } from "@/lib/actions/auth";
 import type { Dictionary, Locale } from "@/lib/i18n/dictionaries";
+import { FEATURES } from "@/lib/features";
 import type { Profile } from "@/lib/types/database";
 
 export function MobileNav({
@@ -22,11 +23,15 @@ export function MobileNav({
 }) {
   const [open, setOpen] = useState(false);
 
+  const bagSpaceLink = FEATURES.bagSpaceMarketplace
+    ? [{ href: "/find-a-traveller", label: t.exploreAsSender }]
+    : [];
+
   const links = profile
     ? [
         { href: "/dashboard", label: t.dashboard },
         { href: "/find-a-sender", label: t.exploreAsTraveller },
-        { href: "/find-a-traveller", label: t.exploreAsSender },
+        ...bagSpaceLink,
         { href: "/dashboard/offers", label: t.offers },
         { href: "/dashboard/orders", label: t.orders },
         { href: `/profile/${profile.id}`, label: t.myProfile },
@@ -34,7 +39,7 @@ export function MobileNav({
     : [
         { href: "/", label: t.home },
         { href: "/find-a-sender", label: t.exploreAsTraveller },
-        { href: "/find-a-traveller", label: t.exploreAsSender },
+        ...bagSpaceLink,
         { href: "/about", label: t.about },
       ];
 

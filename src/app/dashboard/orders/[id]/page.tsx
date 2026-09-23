@@ -22,6 +22,9 @@ import { ChatWindow } from "@/components/chat/chat-window";
 import { getMessagesForConversation } from "@/lib/queries/conversations";
 import { formatCents } from "@/lib/money";
 import { ReportDialog } from "@/components/reports/report-dialog";
+import { PartyIdentity, IdentityHiddenNote } from "@/components/common/party-identity";
+import { isIdentityRevealed } from "@/lib/identity";
+import { NextStepBanner } from "@/components/booking/next-step-banner";
 
 export const metadata: Metadata = { title: "Order Details" };
 
@@ -47,6 +50,14 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
   const otherParty = viewerRole === "shopper" ? booking.traveller : booking.shopper;
   const myReview = reviews.find((r) => r.reviewer_id === profile.id);
   const route = booking.traveller_post ?? booking.ship_request;
+  const identityRevealed = isIdentityRevealed({
+    bookingStatus: booking.status,
+    paymentStatuses: payments.map((payment) => payment.status),
+  });
+  // Negotiation alternates: you can only respond to an offer the other
+  // party made.
+  const lastOffer = offers[offers.length - 1];
+  const isMyTurn = !!lastOffer && lastOffer.made_by !== profile.id;
 
   return (
     <div className="space-y-6">
@@ -109,8 +120,12 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
           </div>
 
           {conversationId && (
-            <div>
-              <h2 className="mb-2 font-semibold text-foreground">Chat with {otherParty?.full_name}</h2>
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <PartyIdentity profile={otherParty} revealed={identityRevealed} />
+                {!identityRevealed && <IdentityHiddenNote className="max-w-xs" />}
+              </div>
+              <NextStepBanner booking={booking} viewerRole={viewerRole} isMyTurn={isMyTurn} />
               <ChatWindow conversationId={conversationId} currentUserId={profile.id} initialMessages={messages} />
             </div>
           )}
@@ -146,7 +161,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
               <PayNowButton bookingId={booking.id} totalCents={booking.total_cents} currency={booking.currency} />
             )}
             {booking.status === "payment_pending" && viewerRole === "traveller" && (
-              <p className="text-sm text-muted-foreground">Waiting for the shopper to complete payment.</p>
+              <p className="text-sm text-muted-foreground">Waiting for the receiver to complete payment.</p>
             )}
 
             {booking.status === "pickup_pending" && viewerRole === "traveller" && <PickupDialog bookingId={booking.id} />}

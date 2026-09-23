@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
 import { requireProfile } from "@/lib/auth";
+import { FEATURES } from "@/lib/features";
 import { getMyTravellerPosts, getMyShipRequests } from "@/lib/queries/my-posts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -26,9 +27,11 @@ export default async function MyPostsPage() {
         <h1 className="text-2xl font-semibold text-foreground">My Posts</h1>
       </div>
 
-      <Tabs defaultValue="trips" className="mt-6">
+      <Tabs defaultValue={FEATURES.bagSpaceMarketplace ? "trips" : "packages"} className="mt-6">
         <TabsList>
-          <TabsTrigger value="trips">My Trips ({travellerPosts.length})</TabsTrigger>
+          {FEATURES.bagSpaceMarketplace && (
+            <TabsTrigger value="trips">My Trips ({travellerPosts.length})</TabsTrigger>
+          )}
           <TabsTrigger value="packages">My Packages ({shipRequests.length})</TabsTrigger>
         </TabsList>
 

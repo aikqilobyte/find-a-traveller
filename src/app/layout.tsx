@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | Find A Traveller",
   },
   description:
-    "Find A Traveller connects senders with verified travellers who have unused luggage space, so packages travel cheaper, faster and with payment protected until delivery.",
+    "Find A Traveller connects people receiving packages with verified travellers who have unused luggage space, so parcels travel cheaper, faster and with payment protected until delivery.",
   openGraph: {
     title: "Find A Traveller",
     description:

@@ -12,27 +12,32 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { FEATURES } from "@/lib/features";
 import { cn } from "@/lib/utils";
 
-const OPTIONS = [
+const ALL_OPTIONS = [
+  {
+    value: "send",
+    label: "I need a package delivered",
+    description: "Post what you need delivered and where it needs to go.",
+    icon: Package,
+    href: "/dashboard/posts/new/package",
+    feature: null,
+  },
   {
     value: "travel",
     label: "I'm travelling",
     description: "Post your trip and the luggage space you have available.",
     icon: Plane,
     href: "/dashboard/posts/new/trip",
-  },
-  {
-    value: "send",
-    label: "I'm sending a package",
-    description: "Post what you need delivered and where it needs to go.",
-    icon: Package,
-    href: "/dashboard/posts/new/package",
+    feature: "bagSpaceMarketplace",
   },
 ] as const;
 
+const OPTIONS = ALL_OPTIONS.filter((option) => !option.feature || FEATURES[option.feature]);
+
 export function CreatePostModal({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
-  const [selected, setSelected] = useState<(typeof OPTIONS)[number]["value"]>("travel");
+  const [selected, setSelected] = useState<(typeof ALL_OPTIONS)[number]["value"]>(OPTIONS[0].value);
   const router = useRouter();
 
   return (

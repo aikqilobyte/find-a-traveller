@@ -28,20 +28,23 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   if (!profile) notFound();
 
   const p = profile as Profile;
-  const viewer = await getCurrentProfile();
-  const reviews = await getReviewsForUser(id, 10);
 
-  const { count: completedCount } = await supabase
-    .from("bookings")
-    .select("id", { count: "exact", head: true })
-    .or(`shopper_id.eq.${id},traveller_id.eq.${id}`)
-    .eq("status", "completed");
-
-  const { data: activePosts } = await supabase
-    .from("traveller_posts")
-    .select("id, origin_city, destination_city, departure_date")
-    .eq("traveller_id", id)
-    .eq("status", "active");
+  // These four are independent of each other — run them together rather
+  // than paying four sequential round trips to Supabase.
+  const [viewer, reviews, { count: completedCount }, { data: activePosts }] = await Promise.all([
+    getCurrentProfile(),
+    getReviewsForUser(id, 10),
+    supabase
+      .from("bookings")
+      .select("id", { count: "exact", head: true })
+      .or(`shopper_id.eq.${id},traveller_id.eq.${id}`)
+      .eq("status", "completed"),
+    supabase
+      .from("traveller_posts")
+      .select("id, origin_city, destination_city, departure_date")
+      .eq("traveller_id", id)
+      .eq("status", "active"),
+  ]);
 
   return (
     <div className="flex min-h-screen flex-col">

@@ -5,30 +5,19 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { HeroSearch } from "@/components/marketing/hero-search";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { FEATURES } from "@/lib/features";
 import { getDictionary } from "@/lib/i18n";
-import { TravellerCard } from "@/components/marketplace/traveller-card";
-import type { TravellerPost } from "@/lib/types/database";
 
 
 export default async function HomePage() {
-  const supabase = await createClient();
-  const [t, { data: featuredPosts }] = await Promise.all([
-    getDictionary(),
-    supabase
-      .from("traveller_posts")
-      .select("*, traveller:profiles(*)")
-      .eq("status", "active")
-      .order("created_at", { ascending: false })
-      .limit(4),
-  ]);
+  const t = await getDictionary();
 
   const services = [
     {
       title: t.home.sendingTitle,
       description: t.home.sendingBody,
       cta: t.home.sendingCta,
-      href: "/find-a-traveller",
+      href: FEATURES.bagSpaceMarketplace ? "/find-a-traveller" : "/dashboard/posts/new/package",
     },
     {
       title: t.home.travellingTitle,
@@ -102,21 +91,25 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Traveller feature */}
-        <FeatureRow
-          eyebrow="For Travellers"
-          title="Need Extra Bag Space?"
-          description="Whether you're a frequent flyer or an occasional traveller, Find A Traveller turns the luggage allowance you aren't using into extra income on trips you're already taking."
-          bullets={["Earn on every trip", "Verified senders only", "You choose what you carry"]}
-          cta={{ label: "Post Your Trip", href: "/dashboard/posts/new/trip" }}
-          imageSrc="https://images.unsplash.com/photo-1553531384-cc64ac80f931?q=80&w=1200&auto=format&fit=crop"
-          imageAlt="Traveller handing over luggage"
-        />
+        {/* "Need Extra Bag Space?" / For Travellers lives behind the
+            bagSpaceMarketplace flag — it advertises renting luggage space,
+            which is not part of this launch. */}
+        {FEATURES.bagSpaceMarketplace && (
+          <FeatureRow
+            eyebrow="For Travellers"
+            title="Need Extra Bag Space?"
+            description="Whether you're a frequent flyer or an occasional traveller, Find A Traveller turns the luggage allowance you aren't using into extra income on trips you're already taking."
+            bullets={["Earn on every trip", "Verified receivers only", "You choose what you carry"]}
+            cta={{ label: "Post Your Trip", href: "/dashboard/posts/new/trip" }}
+            imageSrc="https://images.unsplash.com/photo-1553531384-cc64ac80f931?q=80&w=1200&auto=format&fit=crop"
+            imageAlt="Traveller handing over luggage"
+          />
+        )}
 
-        {/* Sender feature */}
+        {/* Receiver feature */}
         <FeatureRow
           reverse
-          eyebrow="For Senders"
+          eyebrow="For Receivers"
           title="Send With Peace of Mind"
           description="Get your package delivered by a real traveller already heading your way — faster and cheaper than traditional couriers, with your payment protected until it arrives."
           bullets={["Faster than courier", "Save money", "Payment held until delivery"]}
@@ -124,33 +117,6 @@ export default async function HomePage() {
           imageSrc="https://images.unsplash.com/photo-1607344645866-009c320b63e0?q=80&w=1200&auto=format&fit=crop"
           imageAlt="Courier holding a package"
         />
-
-        {/* Marketplace preview */}
-        {featuredPosts && featuredPosts.length > 0 && (
-          <section className="bg-surface-muted py-16">
-            <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-              <div className="text-center">
-                <h2 className="text-3xl font-semibold text-foreground">Your travel, their treasure</h2>
-                <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-                  Travellers earn by delivering items on their route. Shoppers get global products without
-                  the high shipping fees.
-                </p>
-              </div>
-              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {(featuredPosts as unknown as TravellerPost[]).map((post) => (
-                  <TravellerCard key={post.id} post={post} />
-                ))}
-              </div>
-              <div className="mt-8 text-center">
-                <Button asChild size="lg">
-                  <Link href="/find-a-traveller">
-                    Explore All <ArrowRight />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </section>
-        )}
       </main>
       <Footer />
     </div>

@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Message, Profile } from "@/lib/types/database";
+import { isIdentityRevealed } from "@/lib/identity";
+import type { BookingStatus, Message, PaymentStatus, Profile } from "@/lib/types/database";
 
 export interface ConversationSummary {
   id: string;
@@ -7,6 +8,8 @@ export interface ConversationSummary {
   otherParticipant: Profile | null;
   lastMessage: Message | null;
   unreadCount: number;
+  /** False until the related booking is paid — see lib/identity.ts. */
+  identityRevealed: boolean;
 }
 
 export async function getConversationsForUser(userId: string): Promise<ConversationSummary[]> {
@@ -57,6 +60,34 @@ export async function getConversationsForUser(userId: string): Promise<Conversat
     }
   }
 
+  // Identity in the conversation list follows the same rule as the order
+  // page: hidden until the booking is paid.
+  const bookingIds = (conversations ?? []).map((c) => c.booking_id).filter((id): id is string => !!id);
+  const revealedBookingIds = new Set<string>();
+
+  if (bookingIds.length > 0) {
+    const [{ data: bookingRows }, { data: paymentRows }] = await Promise.all([
+      supabase.from("bookings").select("id, status").in("id", bookingIds),
+      supabase.from("payments").select("booking_id, status").in("booking_id", bookingIds),
+    ]);
+
+    const paymentsByBooking = new Map<string, PaymentStatus[]>();
+    for (const row of (paymentRows ?? []) as { booking_id: string; status: PaymentStatus }[]) {
+      paymentsByBooking.set(row.booking_id, [...(paymentsByBooking.get(row.booking_id) ?? []), row.status]);
+    }
+
+    for (const booking of (bookingRows ?? []) as { id: string; status: BookingStatus }[]) {
+      if (
+        isIdentityRevealed({
+          bookingStatus: booking.status,
+          paymentStatuses: paymentsByBooking.get(booking.id),
+        })
+      ) {
+        revealedBookingIds.add(booking.id);
+      }
+    }
+  }
+
   return (conversations ?? [])
     .map((conversation) => ({
       id: conversation.id,
@@ -64,6 +95,7 @@ export async function getConversationsForUser(userId: string): Promise<Conversat
       otherParticipant: otherByConversation.get(conversation.id) ?? null,
       lastMessage: lastByConversation.get(conversation.id) ?? null,
       unreadCount: unreadByConversation.get(conversation.id) ?? 0,
+      identityRevealed: conversation.booking_id ? revealedBookingIds.has(conversation.booking_id) : false,
     }))
     .sort((a, b) => {
       const at = a.lastMessage?.created_at ?? "";

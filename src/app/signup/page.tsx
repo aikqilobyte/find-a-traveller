@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { SignupForm } from "@/components/auth/signup-form";
+import { getDictionary } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Create Account" };
 
@@ -9,10 +10,10 @@ export default async function SignupPage({
 }: {
   searchParams: Promise<{ next?: string }>;
 }) {
-  const { next } = await searchParams;
+  const [{ next }, t] = await Promise.all([searchParams, getDictionary()]);
 
   return (
-    <AuthShell title="Create your account" subtitle="Your connections are just a few steps away.">
+    <AuthShell title={t.auth.createAccount} subtitle={t.auth.signUpSubtitle}>
       <SignupForm next={next} />
     </AuthShell>
   );

@@ -69,7 +69,7 @@ export async function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/find-a-traveller" className="px-1 text-sm font-medium text-primary hover:underline">
+              <Link href="/dashboard/posts/new/package" className="px-1 text-sm font-medium text-primary hover:underline">
                 {t.nav.postNowFree}
               </Link>
               <Button asChild>
