@@ -9,7 +9,6 @@ import { Logo } from "@/components/layout/logo";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { signOut } from "@/lib/actions/auth";
 import type { Dictionary, Locale } from "@/lib/i18n/dictionaries";
-import { FEATURES } from "@/lib/features";
 import type { Profile } from "@/lib/types/database";
 
 export function MobileNav({
@@ -23,9 +22,7 @@ export function MobileNav({
 }) {
   const [open, setOpen] = useState(false);
 
-  const bagSpaceLink = FEATURES.bagSpaceMarketplace
-    ? [{ href: "/find-a-traveller", label: t.exploreAsSender }]
-    : [];
+  const bagSpaceLink = [{ href: "/find-a-traveller", label: t.exploreAsSender }];
 
   const links = profile
     ? [

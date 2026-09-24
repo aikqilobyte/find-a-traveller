@@ -25,7 +25,7 @@ async function NewLuggagePostPage() {
 }
 
 export default async function Page() {
-  if (!FEATURES.bagSpaceMarketplace) {
+  if (!FEATURES.bagSpacePosting) {
     return (
       <ComingSoon
         title="Posting a trip is coming soon"

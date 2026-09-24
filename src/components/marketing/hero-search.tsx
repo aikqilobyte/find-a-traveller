@@ -9,17 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LocationInput } from "@/components/common/location-input";
 import { TRANSPORT_TYPES } from "@/lib/constants";
-import { FEATURES } from "@/lib/features";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 type TabValue = "send" | "travel";
 
-// With the bag-space marketplace hidden there is one browse view, so both
-// intents land on the package marketplace: a receiver searches it to see
-// the route is covered, a traveller searches it for something to carry.
+// Each intent lands on the matching browse view: a receiver looks for a
+// traveller, a traveller looks for a sender.
 const TAB_HREFS: Record<TabValue, string> = {
-  send: FEATURES.bagSpaceMarketplace ? "/find-a-traveller" : "/find-a-sender",
+  send: "/find-a-traveller",
   travel: "/find-a-sender",
 };
 

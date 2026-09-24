@@ -27,9 +27,9 @@ export default async function MyPostsPage() {
         <h1 className="text-2xl font-semibold text-foreground">My Posts</h1>
       </div>
 
-      <Tabs defaultValue={FEATURES.bagSpaceMarketplace ? "trips" : "packages"} className="mt-6">
+      <Tabs defaultValue={FEATURES.bagSpacePosting ? "trips" : "packages"} className="mt-6">
         <TabsList>
-          {FEATURES.bagSpaceMarketplace && (
+          {FEATURES.bagSpacePosting && (
             <TabsTrigger value="trips">My Trips ({travellerPosts.length})</TabsTrigger>
           )}
           <TabsTrigger value="packages">My Packages ({shipRequests.length})</TabsTrigger>

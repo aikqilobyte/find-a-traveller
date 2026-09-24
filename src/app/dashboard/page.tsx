@@ -29,7 +29,7 @@ export default async function DashboardOverviewPage() {
           </Button>
         </div>
         <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {FEATURES.bagSpaceMarketplace && (
+          {FEATURES.bagSpacePosting && (
             <StatCard icon={Plane} label="Active Trips" value={stats.traveller.activePosts} />
           )}
           <StatCard icon={Package} label={t.dashboard.bookingRequests} value={stats.traveller.bookingRequests} />

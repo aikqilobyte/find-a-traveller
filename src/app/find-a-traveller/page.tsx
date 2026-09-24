@@ -1,5 +1,3 @@
-import { FEATURES } from "@/lib/features";
-import { ComingSoon } from "@/components/common/coming-soon";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -21,7 +19,7 @@ const SORT_OPTIONS = [
   { value: "departure_date", label: "Departure Date" },
 ];
 
-async function AvailableSpacePage({
+export default async function AvailableSpacePage({
   searchParams,
 }: {
   searchParams: Promise<TravellerPostFilters>;
@@ -83,14 +81,3 @@ async function AvailableSpacePage({
   );
 }
 
-export default async function Page(props: { searchParams: Promise<TravellerPostFilters> }) {
-  if (!FEATURES.bagSpaceMarketplace) {
-    return (
-      <ComingSoon
-        title="Extra bag space is coming soon"
-        description="We're launching with package delivery first. Renting a traveller's spare luggage space will follow shortly."
-      />
-    );
-  }
-  return <AvailableSpacePage {...props} />;
-}

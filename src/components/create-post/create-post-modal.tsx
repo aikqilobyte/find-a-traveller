@@ -30,7 +30,7 @@ const ALL_OPTIONS = [
     description: "Post your trip and the luggage space you have available.",
     icon: Plane,
     href: "/dashboard/posts/new/trip",
-    feature: "bagSpaceMarketplace",
+    feature: "bagSpacePosting",
   },
 ] as const;
 

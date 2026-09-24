@@ -1,5 +1,3 @@
-import { FEATURES } from "@/lib/features";
-import { ComingSoon } from "@/components/common/coming-soon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -20,7 +18,7 @@ import { formatCents } from "@/lib/money";
 
 export const metadata: Metadata = { title: "Book Space" };
 
-async function BookSpacePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function BookSpacePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const profile = await getCurrentProfile();
   const [post, categories] = await Promise.all([getTravellerPostById(id), getCategories()]);
@@ -110,14 +108,3 @@ async function BookSpacePage({ params }: { params: Promise<{ id: string }> }) {
   );
 }
 
-export default async function Page(props: { params: Promise<{ id: string }> }) {
-  if (!FEATURES.bagSpaceMarketplace) {
-    return (
-      <ComingSoon
-        title="Extra bag space is coming soon"
-        description="We're launching with package delivery first. Booking a traveller's spare luggage space will follow shortly."
-      />
-    );
-  }
-  return <BookSpacePage {...props} />;
-}

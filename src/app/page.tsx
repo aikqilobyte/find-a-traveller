@@ -17,7 +17,7 @@ export default async function HomePage() {
       title: t.home.sendingTitle,
       description: t.home.sendingBody,
       cta: t.home.sendingCta,
-      href: FEATURES.bagSpaceMarketplace ? "/find-a-traveller" : "/dashboard/posts/new/package",
+      href: "/find-a-traveller",
     },
     {
       title: t.home.travellingTitle,
@@ -92,9 +92,9 @@ export default async function HomePage() {
         </section>
 
         {/* "Need Extra Bag Space?" / For Travellers lives behind the
-            bagSpaceMarketplace flag — it advertises renting luggage space,
+            bagSpacePosting flag — it advertises renting luggage space,
             which is not part of this launch. */}
-        {FEATURES.bagSpaceMarketplace && (
+        {FEATURES.bagSpacePosting && (
           <FeatureRow
             eyebrow="For Travellers"
             title="Need Extra Bag Space?"
