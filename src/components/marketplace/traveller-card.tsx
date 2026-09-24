@@ -4,10 +4,12 @@ import { ArrowRight, Heart, Plane } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PartyIdentity } from "@/components/common/party-identity";
+import { getDictionary } from "@/lib/i18n";
 import { formatCents } from "@/lib/money";
 import type { TravellerPost } from "@/lib/types/database";
 
-export function TravellerCard({ post }: { post: TravellerPost }) {
+export async function TravellerCard({ post }: { post: TravellerPost }) {
+  const t = await getDictionary();
   const traveller = post.traveller;
 
   return (
@@ -21,11 +23,11 @@ export function TravellerCard({ post }: { post: TravellerPost }) {
 
       <div className="mt-4 grid grid-cols-2 gap-3 rounded-lg bg-surface-muted p-3 text-sm">
         <div>
-          <p className="text-xs text-muted-foreground">Available Space</p>
+          <p className="text-xs text-muted-foreground">{t.marketplace.availableSpace}</p>
           <p className="font-semibold text-foreground">{post.remaining_capacity_kg} kg</p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-muted-foreground">Charge</p>
+          <p className="text-xs text-muted-foreground">{t.marketplace.charge}</p>
           <p className="font-semibold text-primary">{formatCents(post.price_per_kg_cents, post.currency)}/kg</p>
         </div>
       </div>
@@ -56,10 +58,10 @@ export function TravellerCard({ post }: { post: TravellerPost }) {
 
       <div className="mt-4 grid grid-cols-2 gap-2">
         <Button variant="outline" asChild>
-          <Link href={`/traveller/${post.id}`}>View Details</Link>
+          <Link href={`/traveller/${post.id}`}>{t.marketplace.viewDetails}</Link>
         </Button>
         <Button asChild>
-          <Link href={`/traveller/${post.id}/book`}>Book Space</Link>
+          <Link href={`/traveller/${post.id}/book`}>{t.marketplace.bookSpace}</Link>
         </Button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { Globe, ShieldCheck, UserRound } from "lucide-react";
+import { getDictionary } from "@/lib/i18n";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RatingStars } from "@/components/marketplace/rating-stars";
 import { cn } from "@/lib/utils";
@@ -14,7 +15,7 @@ type PartyProfile = Pick<
  * avatar are withheld — rating and country still show, since those are
  * what the other side actually needs to decide whether to deal.
  */
-export function PartyIdentity({
+export async function PartyIdentity({
   profile,
   revealed,
   size = "md",
@@ -25,6 +26,7 @@ export function PartyIdentity({
   size?: "sm" | "md" | "lg";
   className?: string;
 }) {
+  const t = await getDictionary();
   const avatarSize = size === "sm" ? "size-8" : size === "lg" ? "size-12" : "size-9";
   const name = profile?.display_name ?? profile?.full_name ?? "User";
 
@@ -48,7 +50,7 @@ export function PartyIdentity({
 
       <div className="min-w-0">
         <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-foreground">
-          {revealed ? name : "Anonymous"}
+          {revealed ? name : t.identity.anonymous}
           {/* Verified is a trust signal, not an identifier, so it shows
               even while the name is withheld. */}
           {profile?.verification_status === "verified" && (
@@ -70,11 +72,7 @@ export function PartyIdentity({
 }
 
 /** Short note explaining why a name is hidden, for detail pages. */
-export function IdentityHiddenNote({ className }: { className?: string }) {
-  return (
-    <p className={cn("text-xs text-muted-foreground", className)}>
-      Names stay private until payment is complete. You&apos;ll see each other&apos;s details as soon as
-      the booking is paid.
-    </p>
-  );
+export async function IdentityHiddenNote({ className }: { className?: string }) {
+  const t = await getDictionary();
+  return <p className={cn("text-xs text-muted-foreground", className)}>{t.identity.hiddenNote}</p>;
 }

@@ -9,23 +9,24 @@ import { TravellerCard } from "@/components/marketplace/traveller-card";
 import { PaginationBar } from "@/components/common/pagination-bar";
 import { NoResults } from "@/components/common/no-results";
 import { searchTravellerPosts, type TravellerPostFilters } from "@/lib/queries/traveller-posts";
+import { getDictionary } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Find a Traveller" };
-
-const SORT_OPTIONS = [
-  { value: "newest", label: "Newest" },
-  { value: "price_asc", label: "Lowest Price" },
-  { value: "capacity_desc", label: "Highest Capacity" },
-  { value: "departure_date", label: "Departure Date" },
-];
 
 export default async function AvailableSpacePage({
   searchParams,
 }: {
   searchParams: Promise<TravellerPostFilters>;
 }) {
-  const filters = await searchParams;
+  const [filters, t] = await Promise.all([searchParams, getDictionary()]);
   const { posts, total, page, pageSize } = await searchTravellerPosts(filters);
+
+  const sortOptions = [
+    { value: "newest", label: t.marketplace.sortNewest },
+    { value: "price_asc", label: t.marketplace.sortLowestPrice },
+    { value: "capacity_desc", label: t.marketplace.sortHighestCapacity },
+    { value: "departure_date", label: t.marketplace.sortDepartureDate },
+  ];
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -34,7 +35,7 @@ export default async function AvailableSpacePage({
         <section className="bg-surface-muted">
           <div className="mx-auto max-w-6xl px-4 py-14 text-center sm:px-6 lg:px-8">
             <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
-              Find a traveller heading <span className="text-primary">your way</span>
+              {t.marketplace.findTravellerTitle} <span className="text-primary">{t.marketplace.findTravellerAccent}</span>
             </h1>
           </div>
         </section>
@@ -43,23 +44,24 @@ export default async function AvailableSpacePage({
           <div className="flex flex-wrap items-center justify-between gap-3">
             <MarketplaceTabs active="/find-a-traveller" />
             <div className="flex items-center gap-2">
-              <MobileFilterDrawer>
-                <TravellerFilterPanel />
+              <MobileFilterDrawer t={t.marketplace}>
+                <TravellerFilterPanel t={t.marketplace} />
               </MobileFilterDrawer>
-              <SortSelect options={SORT_OPTIONS} />
+              <SortSelect options={sortOptions} />
             </div>
           </div>
 
           <div className="mt-6 grid gap-8 lg:grid-cols-[280px_1fr]">
             <aside className="hidden lg:block">
-              <TravellerFilterPanel />
+              <TravellerFilterPanel t={t.marketplace} />
             </aside>
 
             <div>
               {posts.length === 0 ? (
                 <NoResults
-                  title="No travellers found"
-                  description="No traveller matches this route and date yet. Post your request so travellers can find you, or widen the search."
+                  t={t.marketplace}
+                  title={t.marketplace.noTravellers}
+                  description={t.marketplace.noTravellersHint}
                 />
               ) : (
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">

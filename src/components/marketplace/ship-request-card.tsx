@@ -4,10 +4,12 @@ import { Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PartyIdentity } from "@/components/common/party-identity";
+import { getDictionary } from "@/lib/i18n";
 import { formatCents } from "@/lib/money";
 import type { ShipRequest } from "@/lib/types/database";
 
-export function ShipRequestCard({ request }: { request: ShipRequest }) {
+export async function ShipRequestCard({ request }: { request: ShipRequest }) {
+  const t = await getDictionary();
   const shopper = request.shopper;
 
   return (
@@ -21,17 +23,17 @@ export function ShipRequestCard({ request }: { request: ShipRequest }) {
 
       <div className="mt-4 grid grid-cols-3 gap-2 rounded-lg bg-surface-muted p-3 text-sm">
         <div>
-          <p className="text-xs text-muted-foreground">Deadline</p>
+          <p className="text-xs text-muted-foreground">{t.marketplace.deadline}</p>
           <p className="font-semibold text-foreground">
-            {request.deadline ? format(new Date(request.deadline), "dd MMM") : "Flexible"}
+            {request.deadline ? format(new Date(request.deadline), "dd MMM") : t.marketplace.flexible}
           </p>
         </div>
         <div>
-          <p className="text-xs text-muted-foreground">Weight</p>
+          <p className="text-xs text-muted-foreground">{t.marketplace.weight}</p>
           <p className="font-semibold text-foreground">{request.weight_kg} kg</p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-muted-foreground">Paying</p>
+          <p className="text-xs text-muted-foreground">{t.marketplace.paying}</p>
           <p className="font-semibold text-primary">{formatCents(request.proposed_payment_cents, request.currency)}</p>
         </div>
       </div>
@@ -57,10 +59,10 @@ export function ShipRequestCard({ request }: { request: ShipRequest }) {
 
       <div className="mt-4 grid grid-cols-2 gap-2">
         <Button variant="outline" asChild>
-          <Link href={`/find-a-sender/${request.id}`}>View</Link>
+          <Link href={`/find-a-sender/${request.id}`}>{t.marketplace.view}</Link>
         </Button>
         <Button asChild>
-          <Link href={`/find-a-sender/${request.id}/offer`}>Make Offer</Link>
+          <Link href={`/find-a-sender/${request.id}/offer`}>{t.marketplace.makeOffer}</Link>
         </Button>
       </div>
     </div>

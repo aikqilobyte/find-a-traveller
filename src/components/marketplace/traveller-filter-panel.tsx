@@ -9,8 +9,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { LocationInput } from "@/components/common/location-input";
 import { TRANSPORT_TYPES, TRIP_TYPES, CATEGORY_FALLBACK } from "@/lib/constants";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-export function TravellerFilterPanel() {
+export function TravellerFilterPanel({ t }: { t: Dictionary["marketplace"] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -55,38 +56,38 @@ export function TravellerFilterPanel() {
   return (
     <div className="space-y-6 rounded-2xl border border-border bg-surface p-5">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-foreground">Filter By</h3>
+        <h3 className="font-semibold text-foreground">{t.filterBy}</h3>
         <button onClick={reset} className="text-sm text-primary hover:underline">
-          Reset
+          {t.reset}
         </button>
       </div>
 
       <div className="space-y-2">
-        <Label>Charge ($/kg)</Label>
+        <Label>{t.chargePerKg}</Label>
         <div className="flex items-center gap-2">
-          <Input type="number" min={0} placeholder="Min" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
-          <Input type="number" min={0} placeholder="Max" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+          <Input type="number" min={0} placeholder={t.min} value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
+          <Input type="number" min={0} placeholder={t.max} value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label>Location</Label>
-        <LocationInput value={from} onChange={setFrom} placeholder="From: country, city or airport" />
-        <LocationInput value={to} onChange={setTo} placeholder="To: country, city or airport" />
+        <Label>{t.location}</Label>
+        <LocationInput value={from} onChange={setFrom} placeholder={t.fromPlaceholder} />
+        <LocationInput value={to} onChange={setTo} placeholder={t.toPlaceholder} />
       </div>
 
       <div className="space-y-2">
-        <Label>Departure date</Label>
+        <Label>{t.departureDate}</Label>
         <Input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} />
       </div>
 
       <div className="space-y-2">
-        <Label>Minimum available space (kg)</Label>
+        <Label>{t.minSpace}</Label>
         <Input type="number" min={0} value={weight} onChange={(e) => setWeight(e.target.value)} />
       </div>
 
       <div className="space-y-2">
-        <Label>Product category</Label>
+        <Label>{t.productCategory}</Label>
         <div className="grid grid-cols-2 gap-2">
           {CATEGORY_FALLBACK.map((name) => {
             const slug = name.toLowerCase();
@@ -101,36 +102,36 @@ export function TravellerFilterPanel() {
       </div>
 
       <div className="space-y-2">
-        <Label>Trip type</Label>
+        <Label>{t.tripType}</Label>
         <RadioGroup value={tripType} onValueChange={setTripType}>
-          {TRIP_TYPES.map((t) => (
-            <label key={t.value} className="flex items-center gap-2 text-sm">
-              <RadioGroupItem value={t.value} />
-              {t.label}
+          {TRIP_TYPES.map((option) => (
+            <label key={option.value} className="flex items-center gap-2 text-sm">
+              <RadioGroupItem value={option.value} />
+              {option.label}
             </label>
           ))}
         </RadioGroup>
       </div>
 
       <div className="space-y-2">
-        <Label>Transport type</Label>
+        <Label>{t.transportType}</Label>
         <div className="space-y-2">
-          {TRANSPORT_TYPES.map((t) => (
-            <label key={t.value} className="flex items-center gap-2 text-sm">
+          {TRANSPORT_TYPES.map((option) => (
+            <label key={option.value} className="flex items-center gap-2 text-sm">
               <Checkbox
-                checked={transport.includes(t.value)}
+                checked={transport.includes(option.value)}
                 onCheckedChange={(checked) =>
-                  setTransport((prev) => (checked ? [...prev, t.value] : prev.filter((v) => v !== t.value)))
+                  setTransport((prev) => (checked ? [...prev, option.value] : prev.filter((v) => v !== option.value)))
                 }
               />
-              {t.label}
+              {option.label}
             </label>
           ))}
         </div>
       </div>
 
       <Button className="w-full" onClick={apply}>
-        Apply Filters
+        {t.applyFilters}
       </Button>
     </div>
   );

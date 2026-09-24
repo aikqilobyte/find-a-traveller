@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PackageSearch, Plus, Plane, RotateCcw, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 // Named rather than passed as a component: NoResults is a Client Component
 // and the browse pages that render it are Server Components, which cannot
@@ -22,12 +23,14 @@ const POST_ICONS = { plus: Plus, plane: Plane };
 export function NoResults({
   title,
   description,
+  t,
   postHref = "/dashboard/posts/new/package",
-  postLabel = "Post your request",
+  postLabel,
   postIcon = "plus",
 }: {
   title: string;
   description?: string;
+  t: Dictionary["marketplace"];
   postHref?: string;
   postLabel?: string;
   postIcon?: keyof typeof POST_ICONS;
@@ -47,20 +50,20 @@ export function NoResults({
       <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
         <Button asChild>
           <Link href={postHref}>
-            <PostIcon /> {postLabel}
+            <PostIcon /> {postLabel ?? t.postYourRequest}
           </Link>
         </Button>
         <Button
           variant="outline"
           disabled={!hasFilters}
           onClick={() => router.push(pathname)}
-          title={hasFilters ? undefined : "No filters are applied"}
+          title={hasFilters ? undefined : t.noFiltersApplied}
         >
-          <RotateCcw /> Search again
+          <RotateCcw /> {t.searchAgain}
         </Button>
         <Button variant="ghost" asChild>
           <Link href="/">
-            <Home /> Go home
+            <Home /> {t.goHome}
           </Link>
         </Button>
       </div>

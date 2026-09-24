@@ -13,13 +13,6 @@ import { getDictionary } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Browse Packages" };
 
-const SORT_OPTIONS = [
-  { value: "newest", label: "Newest" },
-  { value: "budget_asc", label: "Lowest Budget" },
-  { value: "budget_desc", label: "Highest Budget" },
-  { value: "deadline", label: "Deadline" },
-];
-
 export default async function ShipRequestsPage({
   searchParams,
 }: {
@@ -27,6 +20,13 @@ export default async function ShipRequestsPage({
 }) {
   const [filters, t] = await Promise.all([searchParams, getDictionary()]);
   const { requests, total, page, pageSize } = await searchShipRequests(filters);
+
+  const sortOptions = [
+    { value: "newest", label: t.marketplace.sortNewest },
+    { value: "budget_asc", label: t.marketplace.sortLowestBudget },
+    { value: "budget_desc", label: t.marketplace.sortHighestBudget },
+    { value: "deadline", label: t.marketplace.sortDeadline },
+  ];
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -44,25 +44,26 @@ export default async function ShipRequestsPage({
           <div className="flex flex-wrap items-center justify-between gap-3">
             <MarketplaceTabs active="/find-a-sender" />
             <div className="flex items-center gap-2">
-              <MobileFilterDrawer>
-                <ShipRequestFilterPanel />
+              <MobileFilterDrawer t={t.marketplace}>
+                <ShipRequestFilterPanel t={t.marketplace} />
               </MobileFilterDrawer>
-              <SortSelect options={SORT_OPTIONS} />
+              <SortSelect options={sortOptions} />
             </div>
           </div>
 
           <div className="mt-6 grid gap-8 lg:grid-cols-[280px_1fr]">
             <aside className="hidden lg:block">
-              <ShipRequestFilterPanel />
+              <ShipRequestFilterPanel t={t.marketplace} />
             </aside>
 
             <div>
               {requests.length === 0 ? (
                 <NoResults
+                  t={t.marketplace}
                   title={t.marketplace.noSenders}
                   description={t.marketplace.noSendersHint}
                   postIcon="plane"
-                  postLabel="Explore as Receiver"
+                  postLabel={t.marketplace.exploreAsReceiverCta}
                   postHref="/find-a-traveller"
                 />
               ) : (

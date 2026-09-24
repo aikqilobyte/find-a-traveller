@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { LocationInput } from "@/components/common/location-input";
 import { CATEGORY_FALLBACK, TRANSPORT_TYPES } from "@/lib/constants";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-export function ShipRequestFilterPanel() {
+export function ShipRequestFilterPanel({ t }: { t: Dictionary["marketplace"] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -48,33 +49,33 @@ export function ShipRequestFilterPanel() {
   return (
     <div className="space-y-6 rounded-2xl border border-border bg-surface p-5">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-foreground">Filter By</h3>
+        <h3 className="font-semibold text-foreground">{t.filterBy}</h3>
         <button onClick={reset} className="text-sm text-primary hover:underline">
-          Reset
+          {t.reset}
         </button>
       </div>
 
       <div className="space-y-2">
-        <Label>Willing to pay</Label>
+        <Label>{t.willingToPay}</Label>
         <div className="flex items-center gap-2">
-          <Input type="number" min={0} placeholder="Min" value={minBudget} onChange={(e) => setMinBudget(e.target.value)} />
-          <Input type="number" min={0} placeholder="Max" value={maxBudget} onChange={(e) => setMaxBudget(e.target.value)} />
+          <Input type="number" min={0} placeholder={t.min} value={minBudget} onChange={(e) => setMinBudget(e.target.value)} />
+          <Input type="number" min={0} placeholder={t.max} value={maxBudget} onChange={(e) => setMaxBudget(e.target.value)} />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label>Location</Label>
-        <LocationInput value={from} onChange={setFrom} placeholder="From: country, city or airport" />
-        <LocationInput value={to} onChange={setTo} placeholder="To: country, city or airport" />
+        <Label>{t.location}</Label>
+        <LocationInput value={from} onChange={setFrom} placeholder={t.fromPlaceholder} />
+        <LocationInput value={to} onChange={setTo} placeholder={t.toPlaceholder} />
       </div>
 
       <div className="space-y-2">
-        <Label>Max item weight (kg)</Label>
+        <Label>{t.maxWeight}</Label>
         <Input type="number" min={0} value={maxWeight} onChange={(e) => setMaxWeight(e.target.value)} />
       </div>
 
       <div className="space-y-2">
-        <Label>Item category</Label>
+        <Label>{t.itemCategory}</Label>
         <div className="grid grid-cols-2 gap-2">
           {CATEGORY_FALLBACK.map((name) => {
             const slug = name.toLowerCase();
@@ -89,19 +90,19 @@ export function ShipRequestFilterPanel() {
       </div>
 
       <div className="space-y-2">
-        <Label>Transport preference</Label>
+        <Label>{t.transportType}</Label>
         <div className="space-y-2">
-          {TRANSPORT_TYPES.map((t) => (
-            <label key={t.value} className="flex items-center gap-2 text-sm">
-              <Checkbox checked={transport === t.value} onCheckedChange={(v) => setTransport(v ? t.value : "")} />
-              {t.label}
+          {TRANSPORT_TYPES.map((option) => (
+            <label key={option.value} className="flex items-center gap-2 text-sm">
+              <Checkbox checked={transport === option.value} onCheckedChange={(v) => setTransport(v ? option.value : "")} />
+              {option.label}
             </label>
           ))}
         </div>
       </div>
 
       <Button className="w-full" onClick={apply}>
-        Apply Filters
+        {t.applyFilters}
       </Button>
     </div>
   );
