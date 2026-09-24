@@ -5,6 +5,7 @@ import { requireProfile } from "@/lib/auth";
 import { getConversationsForUser } from "@/lib/queries/conversations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/common/empty-state";
 import { MessageSquare, UserRound } from "lucide-react";
 
@@ -20,7 +21,16 @@ export default async function MessagesPage() {
 
       <div className="mt-6 divide-y divide-border rounded-2xl border border-border bg-surface">
         {conversations.length === 0 ? (
-          <EmptyState icon={MessageSquare} title="No conversations yet" description="Book a listing or message a travel buddy to start chatting." />
+          <EmptyState
+            icon={MessageSquare}
+            title="No conversations yet"
+            description="Chat opens as soon as you book a traveller or make an offer on a package."
+            action={
+              <Button asChild size="sm">
+                <Link href="/find-a-traveller">Find a traveller</Link>
+              </Button>
+            }
+          />
         ) : (
           conversations.map((conversation) => (
             <Link

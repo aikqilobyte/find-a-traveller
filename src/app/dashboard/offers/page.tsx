@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { getMyBookings } from "@/lib/queries/my-bookings";
 import { StatusBadge } from "@/components/marketplace/status-badge";
+import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/common/empty-state";
 import { formatCents } from "@/lib/money";
 import { Handshake } from "lucide-react";
@@ -20,7 +21,16 @@ export default async function OffersPage() {
 
       {bookings.length === 0 ? (
         <div className="mt-6">
-          <EmptyState icon={Handshake} title="No active offers" description="New booking requests and counter-offers will appear here." />
+          <EmptyState
+            icon={Handshake}
+            title="No active offers"
+            description="New booking requests and counter-offers will appear here."
+            action={
+              <Button asChild size="sm">
+                <Link href="/find-a-sender">Browse packages to carry</Link>
+              </Button>
+            }
+          />
         </div>
       ) : (
         <div className="mt-6 space-y-3">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/common/empty-state";
 import { Bell } from "lucide-react";
 import type { Notification } from "@/lib/types/database";
@@ -28,7 +29,16 @@ export default async function NotificationsPage() {
 
       {notifications.length === 0 ? (
         <div className="mt-6">
-          <EmptyState icon={Bell} title="No notifications yet" />
+          <EmptyState
+            icon={Bell}
+            title="No notifications yet"
+            description="Booking updates, offers and delivery codes will show up here."
+            action={
+              <Button asChild size="sm" variant="outline">
+                <Link href="/dashboard">Go to dashboard</Link>
+              </Button>
+            }
+          />
         </div>
       ) : (
         <div className="mt-6 divide-y divide-border rounded-2xl border border-border bg-surface">

@@ -61,6 +61,9 @@ export default async function ShipRequestsPage({
                 <NoResults
                   title={t.marketplace.noSenders}
                   description={t.marketplace.noSendersHint}
+                  postIcon="plane"
+                  postLabel="Explore as Receiver"
+                  postHref="/find-a-traveller"
                 />
               ) : (
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">

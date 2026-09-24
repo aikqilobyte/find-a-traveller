@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { requireProfile } from "@/lib/auth";
 import { getMyBookings } from "@/lib/queries/my-bookings";
 import { StatusBadge } from "@/components/marketplace/status-badge";
+import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/common/empty-state";
 import { formatCents } from "@/lib/money";
 import { ClipboardList } from "lucide-react";
@@ -20,7 +21,16 @@ export default async function OrdersPage() {
 
       {bookings.length === 0 ? (
         <div className="mt-6">
-          <EmptyState icon={ClipboardList} title="No orders yet" description="Book a listing or accept an offer to see it here." />
+          <EmptyState
+            icon={ClipboardList}
+            title="No orders yet"
+            description="Book a listing or accept an offer to see it here."
+            action={
+              <Button asChild size="sm">
+                <Link href="/find-a-traveller">Find a traveller</Link>
+              </Button>
+            }
+          />
         </div>
       ) : (
         <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-surface">
