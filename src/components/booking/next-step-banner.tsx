@@ -38,7 +38,7 @@ export function NextStepBanner({
         tone="waiting"
         icon={Hourglass}
         title="Waiting on payment"
-        body="The receiver has been asked to pay. You'll get a notification the moment it goes through, and their details will unlock for you then."
+        body="The package owner has been asked to pay. You'll get a notification the moment it goes through, and their details will unlock for you then."
       />
     );
   }

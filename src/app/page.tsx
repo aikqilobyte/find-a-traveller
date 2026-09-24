@@ -99,7 +99,7 @@ export default async function HomePage() {
             eyebrow="For Travellers"
             title="Need Extra Bag Space?"
             description="Whether you're a frequent flyer or an occasional traveller, Find A Traveller turns the luggage allowance you aren't using into extra income on trips you're already taking."
-            bullets={["Earn on every trip", "Verified receivers only", "You choose what you carry"]}
+            bullets={["Earn on every trip", "Verified package owners only", "You choose what you carry"]}
             cta={{ label: "Post Your Trip", href: "/dashboard/posts/new/trip" }}
             imageSrc="https://images.unsplash.com/photo-1553531384-cc64ac80f931?q=80&w=1200&auto=format&fit=crop"
             imageAlt="Traveller handing over luggage"
@@ -109,7 +109,7 @@ export default async function HomePage() {
         {/* Receiver feature */}
         <FeatureRow
           reverse
-          eyebrow="For Receivers"
+          eyebrow="For Package Owners"
           title="Receive with Peace of Mind"
           description="Get your package delivered by a real traveller already heading your way — faster and cheaper than traditional couriers, with your payment protected until it arrives."
           bullets={["Faster than courier", "Save money", "Payment held until delivery"]}

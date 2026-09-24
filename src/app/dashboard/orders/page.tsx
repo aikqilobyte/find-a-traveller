@@ -54,7 +54,7 @@ export default async function OrdersPage() {
                     </Link>
                   </td>
                   <td className="max-w-48 truncate p-4">{booking.item_description}</td>
-                  <td className="p-4 capitalize">{booking.shopper_id === profile.id ? "Receiver" : "Traveller"}</td>
+                  <td className="p-4 capitalize">{booking.shopper_id === profile.id ? "Package Owner" : "Traveller"}</td>
                   <td className="p-4">{formatCents(booking.total_cents, booking.currency)}</td>
                   <td className="p-4">
                     <StatusBadge status={booking.status} />

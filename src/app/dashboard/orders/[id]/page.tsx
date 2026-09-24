@@ -161,7 +161,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
               <PayNowButton bookingId={booking.id} totalCents={booking.total_cents} currency={booking.currency} />
             )}
             {booking.status === "payment_pending" && viewerRole === "traveller" && (
-              <p className="text-sm text-muted-foreground">Waiting for the receiver to complete payment.</p>
+              <p className="text-sm text-muted-foreground">Waiting for the package owner to complete payment.</p>
             )}
 
             {booking.status === "pickup_pending" && viewerRole === "traveller" && <PickupDialog bookingId={booking.id} />}

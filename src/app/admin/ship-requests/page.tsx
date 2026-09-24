@@ -15,7 +15,7 @@ export default async function AdminShipRequestsPage() {
         <table className="w-full text-sm">
           <thead className="border-b border-border text-left text-xs text-muted-foreground">
             <tr>
-              <th className="p-4">Receiver</th>
+              <th className="p-4">Package Owner</th>
               <th className="p-4">Item</th>
               <th className="p-4">Route</th>
               <th className="p-4">Payment</th>

@@ -80,7 +80,7 @@ export function CreateLuggagePostForm({ categories }: { categories: Category[] }
 
       <div className="space-y-1.5">
         <Label htmlFor="notes">Additional notes</Label>
-        <Textarea id="notes" name="notes" placeholder="Tell receivers about your trip and how you handle items" />
+        <Textarea id="notes" name="notes" placeholder="Tell package owners about your trip and how you handle items" />
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="rules">Rules / restrictions</Label>
