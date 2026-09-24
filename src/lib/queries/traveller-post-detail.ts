@@ -1,7 +1,10 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { TravellerPost, Category } from "@/lib/types/database";
 
-export async function getTravellerPostById(id: string) {
+// Cached for the render pass: generateMetadata and the page both need the
+// same row, and without this each page view costs two identical queries.
+export const getTravellerPostById = cache(async (id: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("traveller_posts")
@@ -19,4 +22,4 @@ export async function getTravellerPostById(id: string) {
     ...raw,
     categories: raw.categories?.map((c) => c.category) ?? [],
   } as TravellerPost;
-}
+});

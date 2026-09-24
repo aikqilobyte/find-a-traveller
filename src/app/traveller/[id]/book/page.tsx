@@ -19,8 +19,11 @@ export const metadata: Metadata = { title: "Book Space" };
 
 export default async function BookSpacePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const profile = await getCurrentProfile();
-  const [post, categories] = await Promise.all([getTravellerPostById(id), getCategories()]);
+  const [profile, post, categories] = await Promise.all([
+    getCurrentProfile(),
+    getTravellerPostById(id),
+    getCategories(),
+  ]);
   if (!post) notFound();
 
   const isOwnPost = post.traveller_id === profile?.id;

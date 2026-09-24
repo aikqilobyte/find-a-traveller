@@ -13,8 +13,7 @@ export const metadata: Metadata = { title: "Make an Offer" };
 
 export default async function MakeOfferPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const profile = await getCurrentProfile();
-  const request = await getShipRequestById(id);
+  const [profile, request] = await Promise.all([getCurrentProfile(), getShipRequestById(id)]);
   if (!request) notFound();
 
   return (

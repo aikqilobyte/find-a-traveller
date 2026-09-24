@@ -10,24 +10,22 @@ import { ReviewCard } from "@/components/reviews/review-card";
 import { EmptyState } from "@/components/common/empty-state";
 import { ReportDialog } from "@/components/reports/report-dialog";
 import { createClient } from "@/lib/supabase/server";
+import { getProfileById } from "@/lib/queries/profile-detail";
 import { getReviewsForUser } from "@/lib/queries/reviews";
 import { getCurrentProfile } from "@/lib/auth";
-import type { Profile } from "@/lib/types/database";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data } = await supabase.from("profiles").select("full_name").eq("id", id).maybeSingle();
-  return { title: data?.full_name ?? "Profile" };
+  const profile = await getProfileById(id);
+  return { title: profile?.full_name ?? "Profile" };
 }
 
 export default async function PublicProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", id).maybeSingle();
+  const [supabase, profile] = await Promise.all([createClient(), getProfileById(id)]);
   if (!profile) notFound();
 
-  const p = profile as Profile;
+  const p = profile;
 
   // These four are independent of each other — run them together rather
   // than paying four sequential round trips to Supabase.
