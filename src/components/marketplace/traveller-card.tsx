@@ -1,30 +1,21 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { ArrowRight, Heart, Plane } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { RatingStars } from "@/components/marketplace/rating-stars";
+import { PartyIdentity } from "@/components/common/party-identity";
 import { formatCents } from "@/lib/money";
 import type { TravellerPost } from "@/lib/types/database";
 
 export function TravellerCard({ post }: { post: TravellerPost }) {
   const traveller = post.traveller;
-  const initials = traveller?.full_name?.slice(0, 2).toUpperCase() ?? "TR";
 
   return (
     <div className="flex flex-col rounded-2xl border border-border bg-surface p-5 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex items-start justify-between">
-        <div className="flex items-center gap-2">
-          <Avatar className="size-9">
-            <AvatarImage src={traveller?.avatar_url ?? undefined} />
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="text-sm font-semibold text-foreground">{traveller?.display_name ?? traveller?.full_name ?? "Traveller"}</p>
-            <RatingStars rating={traveller?.average_rating ?? 0} reviews={traveller?.total_reviews ?? 0} />
-          </div>
-        </div>
+        {/* Browsing happens before any booking exists, so the traveller is
+            always anonymous here — the same rule as the receiver side. */}
+        <PartyIdentity profile={traveller} revealed={false} />
         <Heart className="size-4 text-muted-foreground" />
       </div>
 

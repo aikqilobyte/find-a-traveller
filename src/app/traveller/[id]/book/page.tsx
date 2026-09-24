@@ -4,8 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { RatingStars } from "@/components/marketplace/rating-stars";
+import { PartyIdentity, IdentityHiddenNote } from "@/components/common/party-identity";
 import { BookingForm } from "@/components/booking/booking-form";
 import { getTravellerPostById } from "@/lib/queries/traveller-post-detail";
 import { getCategories } from "@/lib/queries/categories";
@@ -40,16 +39,8 @@ export default async function BookSpacePage({ params }: { params: Promise<{ id: 
           <div className="mt-4 grid gap-6 md:grid-cols-[320px_1fr]">
             <div className="space-y-4">
               <div className="rounded-2xl border border-border bg-surface p-5">
-                <div className="flex items-center gap-2">
-                  <Avatar className="size-9">
-                    <AvatarImage src={traveller.avatar_url ?? undefined} />
-                    <AvatarFallback>{traveller.full_name.slice(0, 2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{traveller.display_name ?? traveller.full_name}</p>
-                    <RatingStars rating={traveller.average_rating} reviews={traveller.total_reviews} />
-                  </div>
-                </div>
+                <PartyIdentity profile={traveller} revealed={false} />
+                <IdentityHiddenNote className="mt-2" />
                 <div className="mt-4 flex items-center justify-between rounded-lg bg-surface-muted p-3 text-sm">
                   <span className="font-semibold text-foreground">{post.remaining_capacity_kg} kg available</span>
                   <span className="font-semibold text-primary">{formatCents(post.price_per_kg_cents, post.currency)}/kg</span>

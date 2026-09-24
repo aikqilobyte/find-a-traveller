@@ -5,10 +5,9 @@ import { format } from "date-fns";
 import { MapPin, CalendarDays, Plane, ShieldCheck, ArrowLeft } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { RatingStars } from "@/components/marketplace/rating-stars";
+import { PartyIdentity, IdentityHiddenNote } from "@/components/common/party-identity";
 import { ReviewCard } from "@/components/reviews/review-card";
 import { EmptyState } from "@/components/common/empty-state";
 import { getTravellerPostById } from "@/lib/queries/traveller-post-detail";
@@ -43,25 +42,13 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
             <div className="space-y-6">
               <div className="rounded-2xl border border-border bg-surface p-6">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="size-12">
-                      <AvatarImage src={traveller.avatar_url ?? undefined} />
-                      <AvatarFallback>{traveller.full_name.slice(0, 2).toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="flex items-center gap-1.5 font-semibold text-foreground">
-                        {traveller.display_name ?? traveller.full_name}
-                        {traveller.verification_status === "verified" && (
-                          <ShieldCheck className="size-4 text-success" />
-                        )}
-                      </p>
-                      <RatingStars rating={traveller.average_rating} reviews={traveller.total_reviews} />
-                    </div>
-                  </div>
+                  <PartyIdentity profile={traveller} revealed={false} size="lg" />
                   <Badge variant="secondary" className="capitalize">
                     {post.trip_type.replace("_", " ")}
                   </Badge>
                 </div>
+
+                <IdentityHiddenNote className="mt-3" />
 
                 <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
                   <Info label="Available Space" value={`${post.remaining_capacity_kg} kg`} />

@@ -22,10 +22,10 @@ export function PartyIdentity({
 }: {
   profile: PartyProfile | null | undefined;
   revealed: boolean;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
   className?: string;
 }) {
-  const avatarSize = size === "sm" ? "size-8" : "size-9";
+  const avatarSize = size === "sm" ? "size-8" : size === "lg" ? "size-12" : "size-9";
   const name = profile?.display_name ?? profile?.full_name ?? "User";
 
   return (
@@ -49,7 +49,9 @@ export function PartyIdentity({
       <div className="min-w-0">
         <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-foreground">
           {revealed ? name : "Anonymous"}
-          {revealed && profile?.verification_status === "verified" && (
+          {/* Verified is a trust signal, not an identifier, so it shows
+              even while the name is withheld. */}
+          {profile?.verification_status === "verified" && (
             <ShieldCheck className="size-3.5 shrink-0 text-success" />
           )}
         </p>

@@ -5,6 +5,7 @@ import { getMyBookings } from "@/lib/queries/my-bookings";
 import { StatusBadge } from "@/components/marketplace/status-badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/common/empty-state";
+import { isIdentityRevealed } from "@/lib/identity";
 import { formatCents } from "@/lib/money";
 import { Handshake } from "lucide-react";
 
@@ -44,7 +45,9 @@ export default async function OffersPage() {
               >
                 <div>
                   <p className="font-medium text-foreground">{booking.item_description}</p>
-                  <p className="text-sm text-muted-foreground">with {other?.full_name ?? "user"}</p>
+                  <p className="text-sm text-muted-foreground">
+                    with {isIdentityRevealed({ bookingStatus: booking.status }) ? (other?.full_name ?? "user") : "Anonymous"}
+                  </p>
                 </div>
                 <div className="text-right">
                   <p className="font-semibold text-foreground">{formatCents(booking.total_cents, booking.currency)}</p>
