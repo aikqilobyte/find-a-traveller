@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { getSiteUrl } from "@/lib/site-url";
 import {
   signUpSchema,
   signInSchema,
@@ -29,7 +30,7 @@ export async function signUp(_prev: ActionResult | null, formData: FormData): Pr
     password: parsed.data.password,
     options: {
       data: { full_name: parsed.data.fullName },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/login%3Fconfirm=1`,
+      emailRedirectTo: `${await getSiteUrl()}/auth/callback?next=/login%3Fconfirm=1`,
     },
   });
 
@@ -82,7 +83,7 @@ export async function requestPasswordReset(
 
   const supabase = await createClient();
   await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/reset-password`,
+    redirectTo: `${await getSiteUrl()}/auth/callback?next=/reset-password`,
   });
 
   // Always return success to avoid leaking which emails are registered.

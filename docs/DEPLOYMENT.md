@@ -5,8 +5,9 @@
 1. Create a new Supabase project (a separate one from local/staging).
 2. Run every file in `supabase/migrations/` in order via the SQL Editor, or `supabase db push` if the project is linked via the CLI.
 3. In **Authentication → URL Configuration**, set the Site URL and add your production domain's `/auth/callback` to the redirect allow-list.
-4. In **Authentication → Email Templates**, the confirmation and recovery links already point at `/auth/callback?next=...` (set via `NEXT_PUBLIC_SITE_URL` in the app, not in Supabase) — no template changes needed.
-5. Copy the Project URL, anon key, and service role key into your hosting provider's environment variables. **Never** expose the service role key to the client or commit it.
+4. In **Authentication → Emails**, apply the branded templates from `docs/email-templates/` (see the README there). The links themselves are built by the app, not by Supabase, so the template only controls how the email looks.
+5. Still in Supabase, set up **custom SMTP** (Project Settings → Authentication → SMTP Settings). Until you do, auth emails come from Supabase's shared address and are rate-limited to a handful per hour — fine for a demo, not for launch. `docs/email-templates/README.md` lists providers.
+6. Copy the Project URL, anon key, and service role key into your hosting provider's environment variables. **Never** expose the service role key to the client or commit it.
 
 ## Vercel
 
@@ -31,7 +32,9 @@
 
 - [ ] All 6 migrations applied
 - [ ] `SUPABASE_SERVICE_ROLE_KEY` set only on the server (never in a `NEXT_PUBLIC_*` variable)
-- [ ] `NEXT_PUBLIC_SITE_URL` matches the deployed domain (used in auth email redirect links)
+- [ ] `NEXT_PUBLIC_SITE_URL` matches the deployed domain. Auth email links fall back to the request origin if it is missing or still set to localhost (see `src/lib/site-url.ts`), so this is no longer fatal — but set it anyway, or emails will point at whichever domain the user happened to sign up on
+- [ ] Custom SMTP configured, or you accept Supabase's shared sender and its hourly rate limit
+- [ ] A real signup on the deployed site delivers a confirmation email, and the link lands back on the deployed domain
 - [ ] Supabase Auth redirect allow-list includes `https://<domain>/auth/callback`
 - [ ] `npm run build` succeeds with production environment variables
 - [ ] At least one admin account exists (`profiles.is_admin = true`) — the seed script creates one; in production, set it manually via the SQL Editor after your first real sign-up: `update profiles set is_admin = true where email = '...';`
