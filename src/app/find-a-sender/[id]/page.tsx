@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { PartyIdentity, IdentityHiddenNote } from "@/components/common/party-identity";
 import { getShipRequestById } from "@/lib/queries/ship-request-detail";
 import { formatCents } from "@/lib/money";
+import { getDictionary } from "@/lib/i18n";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ShipRequestDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const request = await getShipRequestById(id);
+  const [request, t] = await Promise.all([getShipRequestById(id), getDictionary()]);
   if (!request) notFound();
 
   const shopper = request.shopper!;
@@ -31,7 +32,7 @@ export default async function ShipRequestDetailPage({ params }: { params: Promis
       <main className="flex-1 bg-surface-muted/40">
         <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
           <Link href="/find-a-sender" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="size-4" /> Back to explore
+            <ArrowLeft className="size-4" /> {t.detail.backToExplore}
           </Link>
 
           <div className="mt-4 rounded-2xl border border-border bg-surface p-6">
@@ -43,10 +44,13 @@ export default async function ShipRequestDetailPage({ params }: { params: Promis
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <Info label="Deadline" value={request.deadline ? format(new Date(request.deadline), "dd MMM yyyy") : "Flexible"} />
-              <Info label="Item weight" value={`${request.weight_kg} kg`} />
-              <Info label="Quantity" value={String(request.quantity)} />
-              <Info label="Paying" value={formatCents(request.proposed_payment_cents, request.currency)} />
+              <Info
+                label={t.marketplace.deadline}
+                value={request.deadline ? format(new Date(request.deadline), "dd MMM yyyy") : t.marketplace.flexible}
+              />
+              <Info label={t.detail.itemWeight} value={`${request.weight_kg} kg`} />
+              <Info label={t.detail.quantity} value={String(request.quantity)} />
+              <Info label={t.marketplace.paying} value={formatCents(request.proposed_payment_cents, request.currency)} />
             </div>
 
             <div className="mt-6 flex flex-col gap-2 rounded-lg bg-surface-muted p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
@@ -60,13 +64,13 @@ export default async function ShipRequestDetailPage({ params }: { params: Promis
             </div>
 
             <div className="mt-6">
-              <p className="text-sm font-medium text-foreground">Item description</p>
+              <p className="text-sm font-medium text-foreground">{t.detail.itemDescription}</p>
               <p className="text-sm text-muted-foreground">{request.item_description}</p>
             </div>
 
             {request.notes && (
               <div className="mt-4">
-                <p className="text-sm font-medium text-foreground">Note</p>
+                <p className="text-sm font-medium text-foreground">{t.detail.note}</p>
                 <p className="text-sm text-muted-foreground">{request.notes}</p>
               </div>
             )}
@@ -82,7 +86,7 @@ export default async function ShipRequestDetailPage({ params }: { params: Promis
             )}
 
             <Button asChild size="lg" className="mt-6 w-full">
-              <Link href={`/find-a-sender/${request.id}/offer`}>Make Offer</Link>
+              <Link href={`/find-a-sender/${request.id}/offer`}>{t.marketplace.makeOffer}</Link>
             </Button>
           </div>
         </div>

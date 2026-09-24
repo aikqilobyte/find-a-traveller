@@ -13,6 +13,7 @@ import { EmptyState } from "@/components/common/empty-state";
 import { getTravellerPostById } from "@/lib/queries/traveller-post-detail";
 import { getReviewsForUser } from "@/lib/queries/reviews";
 import { formatCents } from "@/lib/money";
+import { getDictionary } from "@/lib/i18n";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -26,7 +27,7 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
   const post = await getTravellerPostById(id);
   if (!post) notFound();
 
-  const reviews = await getReviewsForUser(post.traveller_id, 5);
+  const [reviews, t] = await Promise.all([getReviewsForUser(post.traveller_id, 5), getDictionary()]);
   const traveller = post.traveller!;
 
   return (
@@ -35,7 +36,7 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
       <main className="flex-1 bg-surface-muted/40">
         <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
           <Link href="/find-a-traveller" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="size-4" /> Back to explore
+            <ArrowLeft className="size-4" /> {t.detail.backToExplore}
           </Link>
 
           <div className="mt-4 grid gap-6 md:grid-cols-[1fr_320px]">
@@ -44,17 +45,17 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
                 <div className="flex items-center justify-between">
                   <PartyIdentity profile={traveller} revealed={false} size="lg" />
                   <Badge variant="secondary" className="capitalize">
-                    {post.trip_type.replace("_", " ")}
+                    {post.trip_type === "one_way" ? t.detail.oneWay : t.detail.roundWay}
                   </Badge>
                 </div>
 
                 <IdentityHiddenNote className="mt-3" />
 
                 <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  <Info label="Available Space" value={`${post.remaining_capacity_kg} kg`} />
-                  <Info label="Charge" value={`${formatCents(post.price_per_kg_cents, post.currency)}/kg`} />
-                  <Info label="Transport" value={post.transport_type} className="capitalize" />
-                  <Info label="Departure" value={format(new Date(post.departure_date), "dd MMM yyyy")} />
+                  <Info label={t.marketplace.availableSpace} value={`${post.remaining_capacity_kg} kg`} />
+                  <Info label={t.marketplace.charge} value={`${formatCents(post.price_per_kg_cents, post.currency)}/kg`} />
+                  <Info label={t.detail.transport} value={post.transport_type} className="capitalize" />
+                  <Info label={t.detail.departure} value={format(new Date(post.departure_date), "dd MMM yyyy")} />
                 </div>
 
                 <div className="mt-6 flex flex-col gap-2 rounded-lg bg-surface-muted p-4 text-sm sm:flex-row sm:items-center sm:justify-between">
@@ -69,7 +70,7 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
 
                 {post.return_date && (
                   <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-                    <CalendarDays className="size-4" /> Return: {format(new Date(post.return_date), "dd MMM yyyy")}
+                    <CalendarDays className="size-4" /> {t.detail.returnDate}: {format(new Date(post.return_date), "dd MMM yyyy")}
                   </p>
                 )}
 
@@ -85,7 +86,7 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
 
                 {post.notes && (
                   <div className="mt-4">
-                    <p className="text-sm font-medium text-foreground">Note</p>
+                    <p className="text-sm font-medium text-foreground">{t.detail.note}</p>
                     <p className="text-sm text-muted-foreground">{post.notes}</p>
                   </div>
                 )}
@@ -94,12 +95,12 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
               {(post.rules || post.insurance_info) && (
                 <div className="rounded-2xl border border-border bg-surface p-6">
                   <p className="flex items-center gap-2 font-semibold text-foreground">
-                    <ShieldCheck className="size-4 text-primary" /> Policies &amp; Guidelines
+                    <ShieldCheck className="size-4 text-primary" /> {t.detail.policies}
                   </p>
                   {post.rules && <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">{post.rules}</p>}
                   {post.insurance_info && (
                     <p className="mt-2 text-sm text-muted-foreground">
-                      <span className="font-medium text-foreground">Insurance: </span>
+                      <span className="font-medium text-foreground">{t.detail.insurance}: </span>
                       {post.insurance_info}
                     </p>
                   )}
@@ -107,10 +108,10 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
               )}
 
               <div className="rounded-2xl border border-border bg-surface p-6">
-                <p className="font-semibold text-foreground">Recent Reviews</p>
+                <p className="font-semibold text-foreground">{t.detail.recentReviews}</p>
                 <div className="mt-4 space-y-4">
                   {reviews.length === 0 ? (
-                    <EmptyState title="No reviews yet" description="Be the first to book and leave a review." />
+                    <EmptyState title={t.detail.noReviews} description={t.detail.noReviewsHint} />
                   ) : (
                     reviews.map((review) => <ReviewCard key={review.id} review={review} />)
                   )}
@@ -120,20 +121,20 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
 
             <aside className="h-fit space-y-4 rounded-2xl border border-border bg-surface p-6">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Available</span>
+                <span className="text-sm text-muted-foreground">{t.detail.available}</span>
                 <span className="font-semibold text-foreground">{post.remaining_capacity_kg} kg</span>
               </div>
               <div className="flex items-center justify-between border-t border-border pt-4">
-                <span className="text-sm text-muted-foreground">Price</span>
+                <span className="text-sm text-muted-foreground">{t.detail.price}</span>
                 <span className="text-lg font-semibold text-primary">
                   {formatCents(post.price_per_kg_cents, post.currency)}/kg
                 </span>
               </div>
               <Button asChild size="lg" className="w-full">
-                <Link href={`/traveller/${post.id}/book`}>Book Space</Link>
+                <Link href={`/traveller/${post.id}/book`}>{t.marketplace.bookSpace}</Link>
               </Button>
               <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Plane className="size-3.5" /> You won&apos;t be charged until your booking is confirmed.
+                <Plane className="size-3.5" /> {t.forms.notChargedYet}
               </p>
             </aside>
           </div>
