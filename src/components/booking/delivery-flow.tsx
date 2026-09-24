@@ -60,7 +60,7 @@ export function DeliveryFlow({ bookingId, status }: { bookingId: string; status:
               toast.error(result.error);
             } else {
               setOtp(result.code);
-              toast.info("Delivery code sent to the shopper.");
+              toast.info("Delivery code sent to the receiver.");
             }
           })
         }
