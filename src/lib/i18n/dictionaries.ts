@@ -59,7 +59,7 @@ const en = {
     exploreAll: "Explore All",
   },
   search: {
-    sendingTab: "I'm sending a package",
+    sendingTab: "I'm receiving a package",
     travellingTab: "I'm travelling",
     from: "From",
     to: "To",
@@ -338,7 +338,7 @@ const bn: Dictionary = {
     exploreAll: "সব দেখুন",
   },
   search: {
-    sendingTab: "আমি প্যাকেজ পাঠাচ্ছি",
+    sendingTab: "আমি প্যাকেজ আনাচ্ছি",
     travellingTab: "আমি ভ্রমণ করছি",
     from: "কোথা থেকে",
     to: "কোথায়",
