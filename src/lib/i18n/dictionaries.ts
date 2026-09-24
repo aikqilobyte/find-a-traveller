@@ -39,7 +39,7 @@ const en = {
     howItWorks: "How it works",
     howItWorksSubtitle:
       "Travellers have unused luggage space. Receivers have packages to bring home. We connect the two — safely, and for a fraction of courier prices.",
-    sendingTitle: "Sending a package?",
+    sendingTitle: "Receiving a package?",
     sendingBody: "Find a verified traveller already heading your way and get it delivered for less.",
     sendingCta: "Find a Traveller",
     travellingTitle: "Travelling soon?",
@@ -318,8 +318,8 @@ const bn: Dictionary = {
     howItWorks: "কীভাবে কাজ করে",
     howItWorksSubtitle:
       "ভ্রমণকারীদের আছে অব্যবহৃত লাগেজ স্পেস। প্রাপকদের আছে আনানোর মতো প্যাকেজ। আমরা দুজনকে যুক্ত করি — নিরাপদে, কুরিয়ারের ভগ্নাংশ খরচে।",
-    sendingTitle: "প্যাকেজ পাঠাতে চান?",
-    sendingBody: "আপনার পথেই যাচ্ছেন এমন যাচাইকৃত ভ্রমণকারী খুঁজে নিন এবং কম খরচে পাঠান।",
+    sendingTitle: "প্যাকেজ আনাতে চান?",
+    sendingBody: "আপনার পথেই যাচ্ছেন এমন যাচাইকৃত ভ্রমণকারী খুঁজে নিন এবং কম খরচে আনান।",
     sendingCta: "ভ্রমণকারী খুঁজুন",
     travellingTitle: "শীঘ্রই ভ্রমণে যাচ্ছেন?",
     travellingBody: "আপনার ট্রিপ পোস্ট করুন, পথে একটি প্যাকেজ বহন করুন, আর অব্যবহৃত জায়গা থেকে আয় করুন।",
