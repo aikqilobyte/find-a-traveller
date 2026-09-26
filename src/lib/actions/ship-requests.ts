@@ -71,5 +71,9 @@ export async function createShipRequest(_prev: ActionResult | null, formData: Fo
 
   revalidatePath("/find-a-sender");
   revalidatePath("/dashboard/posts");
-  redirect(`/dashboard/posts/ship-requests/${request.id}?created=1`);
+  // A published request has a public page worth landing on; a draft has
+  // nowhere to show, so send it back to the list. Both of these routes
+  // exist — the previous target, /dashboard/posts/ship-requests/[id], never
+  // did, so publishing always 404'd.
+  redirect(publish ? `/find-a-sender/${request.id}` : "/dashboard/posts");
 }

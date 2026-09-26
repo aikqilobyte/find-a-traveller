@@ -75,7 +75,9 @@ export async function createTravellerPost(_prev: ActionResult | null, formData: 
 
   revalidatePath("/find-a-traveller");
   revalidatePath("/dashboard/posts");
-  redirect(`/dashboard/posts/${post.id}?created=1`);
+  // Same bug as the ship-request path: /dashboard/posts/[id] is not a
+  // route. Land on the public trip page, or the list for a draft.
+  redirect(publish ? `/traveller/${post.id}` : "/dashboard/posts");
 }
 
 export async function setTravellerPostStatus(postId: string, status: TravellerPostStatus): Promise<ActionResult> {

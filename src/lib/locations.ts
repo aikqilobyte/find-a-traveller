@@ -190,3 +190,25 @@ export function searchLocations(query: string, limit = 8): LocationOption[] {
     .slice(0, limit)
     .map((s) => s.option);
 }
+
+/** Countries we hold a curated city list for, alphabetically. */
+export const COUNTRIES_WITH_CITIES: string[] = Object.keys(CITIES_BY_COUNTRY).sort((a, b) =>
+  a.localeCompare(b),
+);
+
+/**
+ * Cities for one country, for the city dropdown on the post forms.
+ * Matching is case- and spacing-insensitive so a half-typed or
+ * differently-cased country name still narrows the list. Returns an empty
+ * array for a country we don't cover, which leaves the field as free text
+ * rather than blocking the user.
+ */
+export function citiesForCountry(country: string): string[] {
+  const q = country.trim().toLowerCase();
+  if (!q) return [];
+
+  const key = Object.keys(CITIES_BY_COUNTRY).find((name) => name.toLowerCase() === q);
+  if (!key) return [];
+
+  return CITIES_BY_COUNTRY[key].map(([city]) => city);
+}
