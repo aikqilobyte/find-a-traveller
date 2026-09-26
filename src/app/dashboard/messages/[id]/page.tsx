@@ -9,6 +9,7 @@ import { getBookingById, getOffersForBooking } from "@/lib/queries/booking-detai
 import { ChatWindow } from "@/components/chat/chat-window";
 import { getDictionary } from "@/lib/i18n";
 import { NextStepBanner } from "@/components/booking/next-step-banner";
+import { QuotePanel } from "@/components/chat/quote-panel";
 
 export const metadata: Metadata = { title: "Conversation" };
 
@@ -56,6 +57,13 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
         }
       : null;
 
+  // Before a quote exists there is no booking to read roles from, so work
+  // out which side the viewer is on from the post the enquiry is about.
+  const isTravellingSide = conversation.traveller_post
+    ? conversation.initiator_id !== profile.id
+    : conversation.initiator_id === profile.id;
+  const pendingOffer = offers.find((offer) => offer.status === "pending") ?? null;
+
   const viewerRole = booking ? (booking.shopper_id === profile.id ? "shopper" : "traveller") : null;
   // Negotiation alternates: you can only respond to an offer the other
   // party made.
@@ -87,6 +95,32 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
 
       {booking && viewerRole && (
         <NextStepBanner booking={booking} viewerRole={viewerRole} isMyTurn={isMyTurn} />
+      )}
+
+      {/* The quote lives with the conversation that produced it, so the
+          deal can be closed without leaving the thread. */}
+      {conversation.type === "inquiry" && (
+        <QuotePanel
+          conversationId={id}
+          viewer={isTravellingSide ? "traveller" : "owner"}
+          quote={
+            booking
+              ? {
+                  bookingNumber: booking.booking_number,
+                  itemDescription: booking.item_description,
+                  weightKg: booking.weight_kg,
+                  deadline: booking.preferred_delivery_date,
+                  currency: booking.currency,
+                  itemPriceCents: booking.item_price_cents,
+                  serviceFeeCents: booking.service_fee_cents,
+                  platformFeeCents: booking.platform_fee_cents,
+                  totalCents: booking.total_cents,
+                  offerId: pendingOffer?.id ?? null,
+                  status: booking.status,
+                }
+              : null
+          }
+        />
       )}
 
       <ChatWindow conversationId={id} currentUserId={profile.id} initialMessages={messages} t={t.marketplace} />

@@ -35,6 +35,13 @@ const MESSAGES: Record<string, string> = {
   booking_not_completed: "You can only review completed orders.",
   invalid_reviewee: "Invalid reviewee for this booking.",
   invalid_target_status: "That status change isn't allowed.",
+  conversation_not_found: "This conversation no longer exists.",
+  conversation_not_quotable: "You can only send a quote from an enquiry about a post.",
+  quote_already_sent: "A quote has already been sent in this chat.",
+  only_traveller_can_quote: "Only the travelling side can send a quote.",
+  invalid_quote_amount: "Enter a fee greater than zero.",
+  invalid_quote_weight: "Enter a weight greater than zero.",
+  invalid_quote_description: "Describe what is being carried.",
 };
 
 export function friendlyError(message: string): string {

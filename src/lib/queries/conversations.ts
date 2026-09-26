@@ -16,6 +16,7 @@ export interface ConversationDetail {
   id: string;
   type: "booking" | "travel_buddy" | "inquiry";
   booking_id: string | null;
+  initiator_id: string | null;
   traveller_post_id: string | null;
   ship_request_id: string | null;
   traveller_post: { id: string; origin_city: string; destination_city: string } | null;
@@ -119,7 +120,7 @@ export async function getConversationById(conversationId: string) {
   const { data } = await supabase
     .from("conversations")
     .select(
-      "id, type, booking_id, traveller_post_id, ship_request_id, " +
+      "id, type, booking_id, initiator_id, traveller_post_id, ship_request_id, " +
         "traveller_post:traveller_posts(id, origin_city, destination_city), " +
         "ship_request:ship_requests(id, item_description)",
     )
