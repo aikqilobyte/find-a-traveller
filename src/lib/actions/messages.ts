@@ -12,14 +12,23 @@ export async function sendMessage(conversationId: string, formData: FormData) {
   if (!body) return { error: "Message can't be empty" } as const;
 
   const supabase = await createClient();
-  const { error } = await supabase
+  // Read the row back: a database trigger redacts contact details before
+  // payment, so what was stored may not be what was typed, and the sender
+  // should be told rather than left to notice the stars themselves.
+  const { data, error } = await supabase
     .from("messages")
-    .insert({ conversation_id: conversationId, sender_id: profile.id, body });
+    .insert({ conversation_id: conversationId, sender_id: profile.id, body })
+    .select("redacted, redacted_patterns")
+    .single();
 
   if (error) return { error: friendlyError(error.message) } as const;
 
   revalidatePath(`/dashboard/messages/${conversationId}`);
-  return { success: true } as const;
+  return {
+    success: true,
+    redacted: data?.redacted ?? false,
+    redactedPatterns: (data?.redacted_patterns ?? []) as string[],
+  } as const;
 }
 
 /**

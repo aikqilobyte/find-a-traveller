@@ -19,6 +19,7 @@ import { DeliveryFlow } from "@/components/booking/delivery-flow";
 import { CancelBookingButton } from "@/components/booking/cancel-booking-button";
 import { ReviewDialog } from "@/components/reviews/review-dialog";
 import { ChatWindow } from "@/components/chat/chat-window";
+import { getDictionary } from "@/lib/i18n";
 import { getMessagesForConversation } from "@/lib/queries/conversations";
 import { formatCents } from "@/lib/money";
 import { ReportDialog } from "@/components/reports/report-dialog";
@@ -38,11 +39,12 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
     notFound();
   }
 
-  const [offers, payments, reviews, conversationId] = await Promise.all([
+  const [offers, payments, reviews, conversationId, t] = await Promise.all([
     getOffersForBooking(id),
     getPaymentsForBooking(id),
     getReviewsForBooking(id),
     getConversationForBooking(id),
+    getDictionary(),
   ]);
 
   const messages = conversationId ? await getMessagesForConversation(conversationId) : [];
@@ -126,7 +128,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 {!identityRevealed && <IdentityHiddenNote className="max-w-xs" />}
               </div>
               <NextStepBanner booking={booking} viewerRole={viewerRole} isMyTurn={isMyTurn} />
-              <ChatWindow conversationId={conversationId} currentUserId={profile.id} initialMessages={messages} />
+              <ChatWindow conversationId={conversationId} currentUserId={profile.id} initialMessages={messages} t={t.marketplace} />
             </div>
           )}
         </div>

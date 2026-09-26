@@ -2,21 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
-import { Send, Paperclip } from "lucide-react";
+import { Send, Paperclip, ShieldAlert } from "lucide-react";
+import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { sendMessage } from "@/lib/actions/messages";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/lib/types/database";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 export function ChatWindow({
   conversationId,
   currentUserId,
   initialMessages,
+  t,
 }: {
   conversationId: string;
   currentUserId: string;
   initialMessages: Message[];
+  t: Dictionary["marketplace"];
 }) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [pending, setPending] = useState(false);
@@ -49,8 +53,10 @@ export function ChatWindow({
     setPending(true);
     const result = await sendMessage(conversationId, formData);
     setPending(false);
-    if (!result || !("error" in result)) {
-      formRef.current?.reset();
+    if (result && "error" in result) return;
+    formRef.current?.reset();
+    if (result?.redacted) {
+      toast.warning(t.contactHidden, { description: t.contactHiddenBody, duration: 8000 });
     }
   }
 
@@ -66,6 +72,16 @@ export function ChatWindow({
               <div key={message.id} className={cn("flex", isMine ? "justify-end" : "justify-start")}>
                 <div className={cn("max-w-[75%] rounded-2xl px-3 py-2 text-sm", isMine ? "bg-primary text-primary-foreground" : "bg-surface-muted text-foreground")}>
                   {message.body && <p className="whitespace-pre-wrap">{message.body}</p>}
+                  {message.redacted && (
+                    <p
+                      className={cn(
+                        "mt-1 flex items-center gap-1 text-[10px]",
+                        isMine ? "text-primary-foreground/80" : "text-warning",
+                      )}
+                    >
+                      <ShieldAlert className="size-3 shrink-0" /> {t.contactHidden}
+                    </p>
+                  )}
                   <p className={cn("mt-1 text-[10px]", isMine ? "text-primary-foreground/70" : "text-muted-foreground")}>
                     {format(new Date(message.created_at), "HH:mm · EEE")}
                   </p>

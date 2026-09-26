@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getConversationById, getMessagesForConversation } from "@/lib/queries/conversations";
 import { getBookingById, getOffersForBooking } from "@/lib/queries/booking-detail";
 import { ChatWindow } from "@/components/chat/chat-window";
+import { getDictionary } from "@/lib/i18n";
 import { NextStepBanner } from "@/components/booking/next-step-banner";
 
 export const metadata: Metadata = { title: "Conversation" };
@@ -19,7 +20,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
 
   // Membership check, conversation and messages are independent lookups —
   // fetch together, then authorise before rendering anything.
-  const [conversation, { data: participant }, messages] = await Promise.all([
+  const [conversation, { data: participant }, messages, t] = await Promise.all([
     getConversationById(id),
     supabase
       .from("conversation_participants")
@@ -28,6 +29,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
       .eq("user_id", profile.id)
       .maybeSingle(),
     getMessagesForConversation(id),
+    getDictionary(),
   ]);
 
   if (!conversation || !participant) notFound();
@@ -87,7 +89,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
         <NextStepBanner booking={booking} viewerRole={viewerRole} isMyTurn={isMyTurn} />
       )}
 
-      <ChatWindow conversationId={id} currentUserId={profile.id} initialMessages={messages} />
+      <ChatWindow conversationId={id} currentUserId={profile.id} initialMessages={messages} t={t.marketplace} />
     </div>
   );
 }

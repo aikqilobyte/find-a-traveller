@@ -190,6 +190,9 @@ export interface Message {
   image_url: string | null;
   read_at: string | null;
   created_at: string;
+  /** Set by the pre-payment contact filter — see migration 20260101000008. */
+  redacted?: boolean;
+  redacted_patterns?: string[];
   sender?: Profile;
 }
 
