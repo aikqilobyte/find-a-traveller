@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PartyIdentity, IdentityHiddenNote } from "@/components/common/party-identity";
+import { StartChatButton } from "@/components/chat/start-chat-button";
 import { getShipRequestById } from "@/lib/queries/ship-request-detail";
 import { formatCents } from "@/lib/money";
 import { getDictionary } from "@/lib/i18n";
@@ -88,6 +89,12 @@ export default async function ShipRequestDetailPage({ params }: { params: Promis
             <Button asChild size="lg" className="mt-6 w-full">
               <Link href={`/find-a-sender/${request.id}/offer`}>{t.marketplace.makeOffer}</Link>
             </Button>
+            <StartChatButton
+              shipRequestId={request.id}
+              label={t.marketplace.contactOwner}
+              size="lg"
+              className="mt-2 w-full"
+            />
           </div>
         </div>
       </main>

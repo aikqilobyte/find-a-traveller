@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PartyIdentity, IdentityHiddenNote } from "@/components/common/party-identity";
+import { StartChatButton } from "@/components/chat/start-chat-button";
 import { ReviewCard } from "@/components/reviews/review-card";
 import { EmptyState } from "@/components/common/empty-state";
 import { getTravellerPostById } from "@/lib/queries/traveller-post-detail";
@@ -133,6 +134,12 @@ export default async function TravellerDetailPage({ params }: { params: Promise<
               <Button asChild size="lg" className="w-full">
                 <Link href={`/traveller/${post.id}/book`}>{t.marketplace.bookSpace}</Link>
               </Button>
+              <StartChatButton
+                travellerPostId={post.id}
+                label={t.marketplace.contactTraveller}
+                size="lg"
+                className="w-full"
+              />
               <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Plane className="size-3.5" /> {t.forms.notChargedYet}
               </p>

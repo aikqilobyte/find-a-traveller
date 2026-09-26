@@ -4,6 +4,7 @@ import { ArrowRight, Heart, Plane } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PartyIdentity } from "@/components/common/party-identity";
+import { StartChatButton } from "@/components/chat/start-chat-button";
 import { getDictionary } from "@/lib/i18n";
 import { formatCents } from "@/lib/money";
 import type { TravellerPost } from "@/lib/types/database";
@@ -64,6 +65,7 @@ export async function TravellerCard({ post }: { post: TravellerPost }) {
           <Link href={`/traveller/${post.id}/book`}>{t.marketplace.bookSpace}</Link>
         </Button>
       </div>
+      <StartChatButton travellerPostId={post.id} label={t.marketplace.startChat} className="mt-2 w-full" />
     </div>
   );
 }

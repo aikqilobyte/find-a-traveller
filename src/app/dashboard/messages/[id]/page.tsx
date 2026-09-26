@@ -40,6 +40,20 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
     ? await Promise.all([getBookingById(bookingId), getOffersForBooking(bookingId)])
     : [null, []];
 
+  // An enquiry has no booking, so show which post it is about instead —
+  // otherwise several enquiries look identical in the thread list.
+  const inquiryContext = conversation.traveller_post
+    ? {
+        label: `${conversation.traveller_post.origin_city} → ${conversation.traveller_post.destination_city}`,
+        href: `/traveller/${conversation.traveller_post.id}`,
+      }
+    : conversation.ship_request
+      ? {
+          label: conversation.ship_request.item_description,
+          href: `/find-a-sender/${conversation.ship_request.id}`,
+        }
+      : null;
+
   const viewerRole = booking ? (booking.shopper_id === profile.id ? "shopper" : "traveller") : null;
   // Negotiation alternates: you can only respond to an offer the other
   // party made.
@@ -50,13 +64,22 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
     <div className="mx-auto max-w-2xl space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-2xl font-semibold text-foreground">Conversation</h1>
-        {booking && (
+        {booking ? (
           <Link
             href={`/dashboard/orders/${booking.id}`}
             className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
           >
             Order {booking.booking_number} <ArrowRight className="size-3.5" />
           </Link>
+        ) : (
+          inquiryContext && (
+            <Link
+              href={inquiryContext.href}
+              className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+            >
+              {inquiryContext.label} <ArrowRight className="size-3.5" />
+            </Link>
+          )
         )}
       </div>
 

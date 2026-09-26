@@ -12,6 +12,16 @@ export interface ConversationSummary {
   identityRevealed: boolean;
 }
 
+export interface ConversationDetail {
+  id: string;
+  type: "booking" | "travel_buddy" | "inquiry";
+  booking_id: string | null;
+  traveller_post_id: string | null;
+  ship_request_id: string | null;
+  traveller_post: { id: string; origin_city: string; destination_city: string } | null;
+  ship_request: { id: string; item_description: string } | null;
+}
+
 export async function getConversationsForUser(userId: string): Promise<ConversationSummary[]> {
   const supabase = await createClient();
 
@@ -108,10 +118,14 @@ export async function getConversationById(conversationId: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("conversations")
-    .select("id, booking_id")
+    .select(
+      "id, type, booking_id, traveller_post_id, ship_request_id, " +
+        "traveller_post:traveller_posts(id, origin_city, destination_city), " +
+        "ship_request:ship_requests(id, item_description)",
+    )
     .eq("id", conversationId)
     .maybeSingle();
-  return data;
+  return data as unknown as ConversationDetail | null;
 }
 
 export async function getMessagesForConversation(conversationId: string): Promise<Message[]> {

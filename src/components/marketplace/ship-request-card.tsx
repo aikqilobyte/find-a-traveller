@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PartyIdentity } from "@/components/common/party-identity";
+import { StartChatButton } from "@/components/chat/start-chat-button";
 import { getDictionary } from "@/lib/i18n";
 import { formatCents } from "@/lib/money";
 import type { ShipRequest } from "@/lib/types/database";
@@ -65,6 +66,7 @@ export async function ShipRequestCard({ request }: { request: ShipRequest }) {
           <Link href={`/find-a-sender/${request.id}/offer`}>{t.marketplace.makeOffer}</Link>
         </Button>
       </div>
+      <StartChatButton shipRequestId={request.id} label={t.marketplace.startChat} className="mt-2 w-full" />
     </div>
   );
 }
