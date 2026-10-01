@@ -36,8 +36,8 @@ export async function Footer() {
         <div>
           <p className="text-sm font-semibold text-primary">{t.footer.help}</p>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            <li><Link href="/about" className="hover:text-primary">{t.footer.support}</Link></li>
-            <li><Link href="/about" className="hover:text-primary">{t.footer.delivery}</Link></li>
+            <li><Link href="/help" className="hover:text-primary">{t.footer.support}</Link></li>
+            <li><Link href="/help" className="hover:text-primary">{t.footer.delivery}</Link></li>
             <li><Link href="/about" className="hover:text-primary">{t.footer.terms}</Link></li>
             <li><Link href="/about" className="hover:text-primary">{t.footer.privacy}</Link></li>
           </ul>
