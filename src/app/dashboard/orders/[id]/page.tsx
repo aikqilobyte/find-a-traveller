@@ -16,6 +16,9 @@ import { OfferNegotiation } from "@/components/booking/offer-negotiation";
 import { PayNowButton } from "@/components/booking/pay-now-button";
 import { PickupDialog } from "@/components/booking/pickup-dialog";
 import { DeliveryFlow } from "@/components/booking/delivery-flow";
+import { InsuranceStep } from "@/components/booking/insurance-step";
+import { TransitTimeline } from "@/components/booking/transit-timeline";
+import { getTransitUpdates } from "@/lib/queries/transit";
 import { CancelBookingButton } from "@/components/booking/cancel-booking-button";
 import { ReviewDialog } from "@/components/reviews/review-dialog";
 import { ChatWindow } from "@/components/chat/chat-window";
@@ -39,12 +42,13 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
     notFound();
   }
 
-  const [offers, payments, reviews, conversationId, t] = await Promise.all([
+  const [offers, payments, reviews, conversationId, t, transitUpdates] = await Promise.all([
     getOffersForBooking(id),
     getPaymentsForBooking(id),
     getReviewsForBooking(id),
     getConversationForBooking(id),
     getDictionary(),
+    getTransitUpdates(id),
   ]);
 
   const messages = conversationId ? await getMessagesForConversation(conversationId) : [];
@@ -152,6 +156,18 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             )}
           </div>
 
+          {/* Tracking appears once the parcel is actually moving. Both
+              sides see it; only the traveller can add to it. */}
+          {["pickup_confirmed", "in_transit", "delivery_pending", "otp_pending", "delivered", "completed"].includes(
+            booking.status,
+          ) && (
+            <TransitTimeline
+              bookingId={booking.id}
+              updates={transitUpdates}
+              canPost={viewerRole === "traveller" && booking.status !== "delivered" && booking.status !== "completed"}
+            />
+          )}
+
           <div className="rounded-2xl border border-border bg-surface p-5 space-y-3">
             <p className="font-semibold text-foreground">Available Actions</p>
 
@@ -159,8 +175,29 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
               <OfferNegotiation booking={booking} offers={offers} viewerRole={viewerRole} />
             )}
 
+            {/* Same insurance gate as the chat banner — paying from here
+                must not be a way around choosing. */}
             {booking.status === "payment_pending" && viewerRole === "shopper" && (
-              <PayNowButton bookingId={booking.id} totalCents={booking.total_cents} currency={booking.currency} />
+              <div className="space-y-3">
+                <InsuranceStep
+                  bookingId={booking.id}
+                  currency={booking.currency}
+                  itemPriceCents={booking.item_price_cents}
+                  serviceFeeCents={booking.service_fee_cents}
+                  platformFeeCents={booking.platform_fee_cents}
+                  insuranceOpted={booking.insurance_opted ?? false}
+                  declaredValueCents={booking.declared_value_cents ?? 0}
+                  insurancePremiumCents={booking.insurance_premium_cents ?? 0}
+                  liabilityAcknowledged={booking.liability_acknowledged ?? false}
+                />
+                {booking.insurance_opted || booking.liability_acknowledged ? (
+                  <PayNowButton bookingId={booking.id} totalCents={booking.total_cents} currency={booking.currency} />
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    Choose an insurance option above to continue to payment.
+                  </p>
+                )}
+              </div>
             )}
             {booking.status === "payment_pending" && viewerRole === "traveller" && (
               <p className="text-sm text-muted-foreground">Waiting for the package owner to complete payment.</p>

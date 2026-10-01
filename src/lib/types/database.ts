@@ -235,3 +235,15 @@ export interface Report {
   resolved_at: string | null;
   created_at: string;
 }
+
+export type TransitStage = "boarding" | "in_transit" | "landed" | "out_for_delivery";
+
+/** A checkpoint posted by the traveller — see migration 20260101000012. */
+export interface TransitUpdate {
+  id: string;
+  booking_id: string;
+  created_by: string;
+  stage: TransitStage;
+  note: string | null;
+  created_at: string;
+}
