@@ -1,5 +1,6 @@
 import { ArrowRight, CheckCircle2, CreditCard, Hourglass, PackageCheck } from "lucide-react";
 import { PayNowButton } from "@/components/booking/pay-now-button";
+import { InsuranceStep } from "@/components/booking/insurance-step";
 import { cn } from "@/lib/utils";
 import type { Booking } from "@/lib/types/database";
 
@@ -18,6 +19,7 @@ export function NextStepBanner({
   isMyTurn: boolean;
 }) {
   const isReceiver = viewerRole === "shopper";
+  const insuranceDecided = !!booking.insurance_opted || !!booking.liability_acknowledged;
 
   if (booking.status === "payment_pending") {
     return isReceiver ? (
@@ -27,11 +29,33 @@ export function NextStepBanner({
         title="Agreed — one step left"
         body="Pay to confirm this booking. Your money is held safely and only released to the traveller after delivery, and you'll both see each other's details straight away."
       >
-        <PayNowButton
-          bookingId={booking.id}
-          totalCents={booking.total_cents}
-          currency={booking.currency}
-        />
+        <div className="space-y-3">
+          {/* Insuring or declining is required before paying — see
+              components/booking/insurance-step. */}
+          <InsuranceStep
+            bookingId={booking.id}
+            currency={booking.currency}
+            itemPriceCents={booking.item_price_cents}
+            serviceFeeCents={booking.service_fee_cents}
+            platformFeeCents={booking.platform_fee_cents}
+            insuranceOpted={booking.insurance_opted ?? false}
+            declaredValueCents={booking.declared_value_cents ?? 0}
+            insurancePremiumCents={booking.insurance_premium_cents ?? 0}
+            liabilityAcknowledged={booking.liability_acknowledged ?? false}
+          />
+
+          {insuranceDecided ? (
+            <PayNowButton
+              bookingId={booking.id}
+              totalCents={booking.total_cents}
+              currency={booking.currency}
+            />
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              Choose an insurance option above to continue to payment.
+            </p>
+          )}
+        </div>
       </Banner>
     ) : (
       <Banner

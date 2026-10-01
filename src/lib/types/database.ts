@@ -143,6 +143,11 @@ export interface Booking {
   service_fee_cents: number;
   platform_fee_cents: number;
   total_cents: number;
+  /** Insurance chosen at checkout — see migration 20260101000011. */
+  insurance_opted?: boolean;
+  declared_value_cents?: number;
+  insurance_premium_cents?: number;
+  liability_acknowledged?: boolean;
   cancelled_reason: string | null;
   created_at: string;
   updated_at: string;

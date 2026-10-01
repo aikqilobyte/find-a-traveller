@@ -42,6 +42,9 @@ const MESSAGES: Record<string, string> = {
   invalid_quote_amount: "Enter a fee greater than zero.",
   invalid_quote_weight: "Enter a weight greater than zero.",
   invalid_quote_description: "Describe what is being carried.",
+  insurance_locked: "Insurance can only be changed before payment.",
+  declared_value_required: "Enter what the item is worth to insure it.",
+  declared_value_too_high: "Declared value is above the $5,000 cover limit.",
 };
 
 export function friendlyError(message: string): string {
