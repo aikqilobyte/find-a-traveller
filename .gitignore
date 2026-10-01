@@ -42,3 +42,8 @@ next-env.d.ts
 
 # Supabase CLI scratch
 supabase/.temp
+
+# Local secrets and scratch clones
+Root pass Hostinger.txt
+*pass*.txt
+find-a-traveller/
