@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { unitsToCents } from "@/lib/money";
 
 export const createTravellerPostSchema = z.object({
   originCountry: z.string().min(2),
@@ -25,9 +26,11 @@ export const createShipRequestSchema = z.object({
   itemDescription: z.string().min(3),
   quantity: z.coerce.number().int().positive().default(1),
   weightKg: z.coerce.number().positive(),
-  itemValueCents: z.coerce.number().int().min(0).default(0),
+  // The form speaks dollars because people do; the database stays in
+  // integer cents, so the conversion happens once, here.
+  itemValueUsd: z.coerce.number().min(0).default(0).transform(unitsToCents),
   deadline: z.string().optional(),
-  proposedPaymentCents: z.coerce.number().int().positive("Enter a proposed payment"),
+  proposedPaymentUsd: z.coerce.number().positive("Enter what you will pay the traveller").transform(unitsToCents),
   transportPreference: z.enum(["plane", "train", "bus", "car"]).optional(),
   notes: z.string().optional(),
   categoryIds: z.array(z.string().uuid()).default([]),

@@ -56,6 +56,14 @@ const en = {
     paymentBody: "Your payment is held safely and only released to the traveller after delivery.",
     reviewTitle: "Review System",
     reviewBody: "Every delivery ends with a two-way review, so trust builds with each trip.",
+    ownersEyebrow: "For Package Owners",
+    ownersTitle: "Receive with Peace of Mind",
+    ownersBody:
+      "Get your package delivered by a real traveller already heading your way — faster and cheaper than traditional couriers, with your payment protected until it arrives.",
+    ownersBullet1: "Faster than courier",
+    ownersBullet2: "Save money",
+    ownersBullet3: "Payment held until delivery",
+    ownersCta: "Post Your Package",
     exploreAll: "Explore All",
   },
   search: {
@@ -378,6 +386,14 @@ const bn: Dictionary = {
     paymentBody: "আপনার টাকা নিরাপদে জমা থাকে এবং ডেলিভারির পরেই ভ্রমণকারীকে দেওয়া হয়।",
     reviewTitle: "রিভিউ সিস্টেম",
     reviewBody: "প্রতিটি ডেলিভারি শেষে দুই পক্ষই রিভিউ দেয়, তাই প্রতি ট্রিপে বিশ্বাস বাড়ে।",
+    ownersEyebrow: "প্যাকেজ মালিকদের জন্য",
+    ownersTitle: "নিশ্চিন্তে বুঝে নিন",
+    ownersBody:
+      "আপনার পথেই যাচ্ছেন এমন একজন সত্যিকারের ভ্রমণকারীর মাধ্যমে প্যাকেজ আনান — প্রচলিত কুরিয়ারের চেয়ে দ্রুত ও সাশ্রয়ী, আর জিনিস না পৌঁছানো পর্যন্ত আপনার টাকা সুরক্ষিত।",
+    ownersBullet1: "কুরিয়ারের চেয়ে দ্রুত",
+    ownersBullet2: "খরচ কম",
+    ownersBullet3: "ডেলিভারি পর্যন্ত টাকা সুরক্ষিত",
+    ownersCta: "আপনার প্যাকেজ পোস্ট করুন",
     exploreAll: "সব দেখুন",
   },
   search: {

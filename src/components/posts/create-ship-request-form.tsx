@@ -36,8 +36,11 @@ export function CreateShipRequestForm({ categories }: { categories: Category[] }
           <Input id="weightKg" name="weightKg" type="number" step="0.1" min={0.1} required />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="itemValueCents">Item value (cents)</Label>
-          <Input id="itemValueCents" name="itemValueCents" type="number" min={0} placeholder="e.g. 20000 = $200.00" />
+          <Label htmlFor="itemValueUsd">Item value (USD)</Label>
+          <Input id="itemValueUsd" name="itemValueUsd" type="number" min={0} step="0.01" placeholder="200.00" />
+          <p className="text-xs text-muted-foreground">
+            Roughly what the item is worth. Used for insurance and customs, not what you pay.
+          </p>
         </div>
       </div>
 
@@ -47,8 +50,20 @@ export function CreateShipRequestForm({ categories }: { categories: Category[] }
           <Input id="deadline" name="deadline" type="date" />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="proposedPaymentCents">Proposed payment (cents)</Label>
-          <Input id="proposedPaymentCents" name="proposedPaymentCents" type="number" min={1} required placeholder="e.g. 20000 = $200.00" />
+          <Label htmlFor="proposedPaymentUsd">What you&apos;ll pay the traveller (USD)</Label>
+          <Input
+            id="proposedPaymentUsd"
+            name="proposedPaymentUsd"
+            type="number"
+            min={0.01}
+            step="0.01"
+            required
+            placeholder="25.00"
+          />
+          <p className="text-xs text-muted-foreground">
+            Your starting offer for carrying this. Travellers can accept it or counter with their own
+            price, so treat it as a suggestion rather than a final figure.
+          </p>
         </div>
       </div>
 

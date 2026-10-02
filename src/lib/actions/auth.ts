@@ -25,7 +25,7 @@ export async function signUp(_prev: ActionResult | null, formData: FormData): Pr
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
@@ -36,6 +36,18 @@ export async function signUp(_prev: ActionResult | null, formData: FormData): Pr
 
   if (error) {
     return { error: error.message };
+  }
+
+  // Supabase deliberately returns a success for an address that already
+  // exists, so an attacker cannot use signup to discover who has an
+  // account. The giveaway is an empty identities array. Telling the
+  // person plainly beats leaving them waiting for an email that will
+  // never arrive — the address is one they already typed, so this reveals
+  // nothing they did not know.
+  if (data.user && data.user.identities && data.user.identities.length === 0) {
+    return {
+      error: "An account with this email already exists. Try signing in, or reset your password.",
+    };
   }
 
   const next = formData.get("next");

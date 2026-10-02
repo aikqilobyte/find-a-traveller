@@ -109,11 +109,11 @@ export default async function HomePage() {
         {/* Receiver feature */}
         <FeatureRow
           reverse
-          eyebrow="For Package Owners"
-          title="Receive with Peace of Mind"
-          description="Get your package delivered by a real traveller already heading your way — faster and cheaper than traditional couriers, with your payment protected until it arrives."
-          bullets={["Faster than courier", "Save money", "Payment held until delivery"]}
-          cta={{ label: "Post Your Package", href: "/dashboard/posts/new/package" }}
+          eyebrow={t.home.ownersEyebrow}
+          title={t.home.ownersTitle}
+          description={t.home.ownersBody}
+          bullets={[t.home.ownersBullet1, t.home.ownersBullet2, t.home.ownersBullet3]}
+          cta={{ label: t.home.ownersCta, href: "/dashboard/posts/new/package" }}
           imageSrc="https://images.unsplash.com/photo-1607344645866-009c320b63e0?q=80&w=1200&auto=format&fit=crop"
           imageAlt="Courier holding a package"
         />
