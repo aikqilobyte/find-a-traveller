@@ -94,11 +94,28 @@ export async function requestPasswordReset(
   }
 
   const supabase = await createClient();
-  await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
     redirectTo: `${await getSiteUrl()}/auth/callback?next=/reset-password`,
   });
 
-  // Always return success to avoid leaking which emails are registered.
+  // Whether an address is registered stays hidden — that is the point of
+  // the blanket success below. But a genuine failure must not hide behind
+  // it: silently reporting success for a send that never happened leaves
+  // someone waiting forever for an email nobody tried to deliver.
+  if (error) {
+    const message = error.message.toLowerCase();
+    if (error.status === 429 || message.includes("rate") || message.includes("too many")) {
+      return {
+        error: "Too many emails requested. Wait an hour and try again, or contact support.",
+      };
+    }
+    // Anything else is a real fault on our side, not a hint about the
+    // address, so it is safe to surface.
+    return { error: "We couldn't send the reset email. Please try again shortly." };
+  }
+
+  // Unregistered addresses fall through to the same success as registered
+  // ones, so signup cannot be used to discover who has an account.
   return { success: true };
 }
 
