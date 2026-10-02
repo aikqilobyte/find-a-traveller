@@ -59,8 +59,9 @@ const en = {
     exploreAll: "Explore All",
   },
   search: {
-    sendingTab: "I'm receiving a package",
-    travellingTab: "I'm travelling",
+    ctaFindTraveller: "Find a traveller",
+    ctaImTraveller: "I'm a traveller",
+    ctaHint: "Choose what you want to do",
     from: "From",
     to: "To",
     locationPlaceholder: "Country, city or airport",
@@ -374,8 +375,9 @@ const bn: Dictionary = {
     exploreAll: "সব দেখুন",
   },
   search: {
-    sendingTab: "আমি প্যাকেজ আনাচ্ছি",
-    travellingTab: "আমি ভ্রমণ করছি",
+    ctaFindTraveller: "ভ্রমণকারী খুঁজুন",
+    ctaImTraveller: "আমি ভ্রমণকারী",
+    ctaHint: "আপনি কী করতে চান বেছে নিন",
     from: "কোথা থেকে",
     to: "কোথায়",
     locationPlaceholder: "দেশ, শহর বা এয়ারপোর্ট",

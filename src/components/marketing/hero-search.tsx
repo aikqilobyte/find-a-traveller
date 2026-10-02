@@ -2,27 +2,24 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LocationInput } from "@/components/common/location-input";
 import { TRANSPORT_TYPES } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-type TabValue = "send" | "travel";
-
-// Each intent lands on the matching browse view: a receiver looks for a
-// traveller, a traveller looks for a sender.
-const TAB_HREFS: Record<TabValue, string> = {
-  send: "/find-a-traveller",
-  travel: "/find-a-sender",
-};
+// The two sides of the marketplace, as destinations rather than a filter.
+// A tab had to be chosen and then Search pressed before anything revealed
+// where you were going; two named buttons say it up front.
+const DESTINATIONS = {
+  findTraveller: "/find-a-traveller",
+  imTraveller: "/find-a-sender",
+} as const;
 
 export function HeroSearch({ t }: { t: Dictionary["search"] }) {
-  const [tab, setTab] = useState<TabValue>("send");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [fromDate, setFromDate] = useState("");
@@ -32,12 +29,9 @@ export function HeroSearch({ t }: { t: Dictionary["search"] }) {
   const [showMore, setShowMore] = useState(false);
   const router = useRouter();
 
-  const tabs: { value: TabValue; label: string }[] = [
-    { value: "send", label: t.sendingTab },
-    { value: "travel", label: t.travellingTab },
-  ];
-
-  function handleSearch() {
+  // Whatever has been typed travels with you, so filling the fields is
+  // never wasted whichever side you turn out to be on.
+  function go(destination: keyof typeof DESTINATIONS) {
     const params = new URLSearchParams();
     if (from) params.set("from", from);
     if (to) params.set("to", to);
@@ -45,30 +39,12 @@ export function HeroSearch({ t }: { t: Dictionary["search"] }) {
     if (toDate) params.set("toDate", toDate);
     if (transport) params.set("transport", transport);
     if (weight) params.set("weight", weight);
-    router.push(`${TAB_HREFS[tab]}${params.toString() ? `?${params.toString()}` : ""}`);
+    router.push(`${DESTINATIONS[destination]}${params.toString() ? `?${params.toString()}` : ""}`);
   }
 
   return (
     <div className="mx-auto w-full max-w-3xl rounded-2xl border border-border bg-surface p-3 text-left shadow-lg">
-      <div className="flex flex-wrap gap-1 rounded-lg bg-surface-muted p-1">
-        {tabs.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => setTab(option.value)}
-            className={cn(
-              "flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-              tab === option.value
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+      <div className="grid gap-3 sm:grid-cols-2 sm:items-end">
         <div>
           <Label htmlFor="hero-from" className="mb-1 block text-xs text-muted-foreground">
             {t.from}
@@ -81,8 +57,18 @@ export function HeroSearch({ t }: { t: Dictionary["search"] }) {
           </Label>
           <LocationInput id="hero-to" value={to} onChange={setTo} placeholder={t.locationPlaceholder} />
         </div>
-        <Button onClick={handleSearch} size="lg" className="w-full sm:w-auto">
-          <Search /> {t.search}
+      </div>
+
+      {/* The choice is the action. Each button names where it goes, so the
+          two sides of the marketplace are visible before anything is
+          clicked rather than hidden behind a tab. */}
+      <p className="mt-4 text-center text-xs text-muted-foreground">{t.ctaHint}</p>
+      <div className="mt-2 grid gap-2 sm:grid-cols-2">
+        <Button onClick={() => go("findTraveller")} size="lg" className="w-full">
+          <Search /> {t.ctaFindTraveller}
+        </Button>
+        <Button onClick={() => go("imTraveller")} size="lg" variant="outline" className="w-full">
+          <Plane /> {t.ctaImTraveller}
         </Button>
       </div>
 
