@@ -11,10 +11,33 @@ Supabase dashboard → **Authentication** → **Emails** → pick the template �
 | `confirm-signup.html` | Confirm signup | `Confirm your email — Find A Traveller` |
 | `reset-password.html` | Reset password | `Reset your password — Find A Traveller` |
 
-The logo is loaded from `https://findatraveller.netlify.app/logo-mark.png`. If the site moves to a
+The logo is loaded from `https://app.tripshipr.com/logo-mark.png`. If the site moves to a
 custom domain, update that URL in both files (and here).
 
-Supabase template variables used: `{{ .ConfirmationURL }}`, `{{ .Email }}`. Do not rename them.
+Supabase template variables used: `{{ .SiteURL }}`, `{{ .TokenHash }}`, `{{ .Email }}`. Do not rename them.
+
+## Why these use `{{ .TokenHash }}` and not `{{ .ConfirmationURL }}`
+
+`{{ .ConfirmationURL }}` produces a PKCE link. The proof it needs is held in a cookie in the browser
+that started the signup, so the link only completes in that same browser. People sign up on a laptop
+and open the mail on their phone, where that cookie does not exist, and the confirmation fails with
+`auth_callback_failed`.
+
+`{{ .TokenHash }}` carries its own proof, so the link works from whichever device opened the message.
+`/auth/callback` accepts both.
+
+## Site URL must be correct, or none of this matters
+
+`{{ .SiteURL }}` is **Authentication → URL Configuration → Site URL** in the Supabase dashboard, and
+Supabase also falls back to it whenever an app-supplied `emailRedirectTo` is not on the allow-list
+below. If it still says `http://localhost:3000`, every confirmation email tells the recipient to visit
+their own machine.
+
+Set:
+
+- **Site URL**: `https://app.tripshipr.com`
+- **Redirect URLs**: `https://app.tripshipr.com/auth/callback` (add `http://localhost:3000/auth/callback`
+  too if you want local signup to keep working)
 
 ## Sending from your own address
 

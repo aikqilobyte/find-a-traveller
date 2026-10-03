@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -15,17 +16,37 @@ function safeNext(value: string | null): string {
   return value;
 }
 
-// Supabase email links (signup confirmation, password recovery, magic
-// link) and social sign-in all redirect here with a PKCE `code`. We
-// exchange it for a session server-side so the resulting cookies are set
-// before the user lands on the next page.
+/**
+ * Lands every auth round-trip: email confirmation, password recovery and
+ * social sign-in.
+ *
+ * Two different mechanisms arrive here and both have to work.
+ *
+ * `code` is PKCE. The matching verifier lives in a cookie in the browser
+ * that started the flow, so it only completes in that same browser. That
+ * is right for social sign-in, which begins and ends in one tab, and it is
+ * exactly wrong for email: people sign up on a laptop and open the mail on
+ * their phone, where no verifier exists, and the exchange fails.
+ *
+ * `token_hash` carries its own proof and needs no cookie, so it works from
+ * whatever device opened the message. Email templates should use it.
+ */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get("code");
   const next = safeNext(searchParams.get("next"));
 
-  if (code) {
-    const supabase = await createClient();
+  const code = searchParams.get("code");
+  const tokenHash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
+
+  const supabase = await createClient();
+
+  if (tokenHash && type) {
+    const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
+    if (!error) {
+      return NextResponse.redirect(`${origin}${next}`);
+    }
+  } else if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);

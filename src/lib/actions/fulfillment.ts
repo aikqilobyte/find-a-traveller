@@ -46,17 +46,17 @@ export async function initiateDelivery(bookingId: string): Promise<ActionResult>
   return { success: true };
 }
 
-// Dev/test mode: since no SMS provider is configured, the plaintext code
-// is returned to the traveller's own screen with a clear "test mode"
-// label instead of silently pretending an SMS was sent. See
-// send_delivery_otp() in the functions migration for the security model
-// (bcrypt hash stored, plaintext never persisted).
+// The code goes to the package owner's notifications and nowhere else.
+// It is deliberately not returned here: the traveller is the one person
+// who must not be able to read it, or they could release their own
+// payment without handing the package over. See send_delivery_otp() in
+// migration 20260101000014.
 export async function sendDeliveryOtp(bookingId: string) {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("send_delivery_otp", { p_booking_id: bookingId });
+  const { error } = await supabase.rpc("send_delivery_otp", { p_booking_id: bookingId });
   if (error) return { error: friendlyError(error.message) } as const;
   revalidatePath(`/dashboard/orders/${bookingId}`);
-  return { success: true, code: data as string } as const;
+  return { success: true } as const;
 }
 
 export async function verifyDeliveryOtp(_prev: ActionResult | null, formData: FormData): Promise<ActionResult> {
