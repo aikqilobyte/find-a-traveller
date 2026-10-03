@@ -310,6 +310,10 @@ const en = {
     postPackage: "Post a package",
   },
   auth: {
+    continueWithGoogle: "Continue with Google",
+    continueWithFacebook: "Continue with Facebook",
+    orWithEmail: "or with email",
+    oauthFailed: "Couldn't start sign-in. Please try again.",
     welcomeBack: "Welcome back",
     signInSubtitle: "Sign in to continue to your dashboard.",
     createAccount: "Create your account",
@@ -703,6 +707,10 @@ const bn: Dictionary = {
     postPackage: "প্যাকেজ পোস্ট করুন",
   },
   auth: {
+    continueWithGoogle: "গুগল দিয়ে চালিয়ে যান",
+    continueWithFacebook: "ফেসবুক দিয়ে চালিয়ে যান",
+    orWithEmail: "অথবা ইমেইল দিয়ে",
+    oauthFailed: "সাইন ইন শুরু করা যায়নি। আবার চেষ্টা করুন।",
     welcomeBack: "আবার স্বাগতম",
     signInSubtitle: "ড্যাশবোর্ডে যেতে সাইন ইন করুন।",
     createAccount: "আপনার অ্যাকাউন্ট তৈরি করুন",

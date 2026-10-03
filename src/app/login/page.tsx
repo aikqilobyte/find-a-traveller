@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { LoginForm } from "@/components/auth/login-form";
+import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { getDictionary } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Sign In" };
@@ -24,6 +25,7 @@ export default async function LoginPage({
           Your password has been updated. Sign in with your new password.
         </p>
       )}
+      <OAuthButtons next={next} t={t.auth} />
       <LoginForm next={next} />
     </AuthShell>
   );

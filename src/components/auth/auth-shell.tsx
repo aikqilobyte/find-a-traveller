@@ -21,8 +21,8 @@ export function AuthShell({
             Your connections are just a few steps away.
           </p>
           <p className="text-navy-foreground/70">
-            Share luggage space, ship items across borders, and find a travel buddy — with verified,
-            trusted travellers.
+            Ship items across borders with travellers already heading your way, or earn from
+            luggage space you aren&rsquo;t using.
           </p>
         </div>
       </div>
