@@ -26,9 +26,20 @@ export async function getSiteUrl(): Promise<string> {
 
   const configuredIsLocal = !!configured && /^https?:\/\/(localhost|127\.0\.0\.1)/.test(configured);
   const requestIsLocal = !!host && /^(localhost|127\.0\.0\.1)/.test(host);
-
   if (configured && (!configuredIsLocal || requestIsLocal)) return withoutTrailingSlash(configured);
   if (fromRequest) return withoutTrailingSlash(fromRequest);
+
+  // Nothing usable: no host header, and the only configured value points at
+  // a machine the recipient of this link does not have. Say so loudly —
+  // this is otherwise invisible until a real person clicks a dead link in
+  // an email, which is a terrible place to discover it.
+  if (configuredIsLocal) {
+    console.warn(
+      `[site-url] About to build an email link against ${configured}, which is localhost, ` +
+        `and no host header was available to correct it. Set NEXT_PUBLIC_SITE_URL to the ` +
+        `deployed domain — every auth email sent from here points at the recipient's own machine.`,
+    );
+  }
 
   return withoutTrailingSlash(configured ?? "http://localhost:3000");
 }
