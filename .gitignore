@@ -47,3 +47,8 @@ supabase/.temp
 Root pass Hostinger.txt
 *pass*.txt
 find-a-traveller/
+
+# The template carries no secrets and belongs in the repo; the .env*
+# rule above was quietly excluding it, so a fresh clone had nothing to
+# copy from.
+!.env.example
