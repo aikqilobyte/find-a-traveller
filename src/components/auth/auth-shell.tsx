@@ -21,7 +21,7 @@ export function AuthShell({
             Your connections are just a few steps away.
           </p>
           <p className="text-navy-foreground/70">
-            Ship items across borders with travellers already heading your way, or earn from
+            Ship items across borders with travellers whose trips are already planned, or earn from
             luggage space you aren&rsquo;t using.
           </p>
         </div>

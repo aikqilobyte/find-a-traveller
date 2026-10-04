@@ -38,13 +38,22 @@ export default async function HomePage() {
       <Navbar />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-surface-muted">
-          <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              {t.home.heroTitle} <span className="text-primary">{t.home.heroTitleAccent}</span>
+        {/* No text colour on the section itself: the search card inside is
+            light, and inheriting white here turned its secondary button into
+            white-on-white. The heading and subtitle set their own. */}
+        <section className="relative overflow-hidden bg-navy">
+          {/* A single soft glow behind the heading. Flat dark reads as heavy;
+              one light source gives the panel depth without decoration. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_0%,rgba(111,176,245,0.22),transparent_70%)]"
+          />
+          <div className="relative mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 sm:py-24 lg:px-8">
+            <h1 className="text-5xl font-semibold text-navy-foreground sm:text-6xl">
+              {t.home.heroTitle} <span className="text-navy-accent">{t.home.heroTitleAccent}</span>
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">{t.home.heroSubtitle}</p>
-            <div className="mt-8">
+            <p className="mx-auto mt-5 max-w-2xl text-navy-foreground/75">{t.home.heroSubtitle}</p>
+            <div className="mt-10">
               <HeroSearch t={t.search} />
             </div>
           </div>

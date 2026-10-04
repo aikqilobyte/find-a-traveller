@@ -19,6 +19,9 @@
   /* Deep brand navy used for the "safety" / CTA banner sections */
   --navy: #042a5c;
   --navy-foreground: #ffffff;
+  /* Lighter than --primary, which has too little contrast against the navy
+     itself to carry an accent word in the hero heading. */
+  --navy-accent: #6fb0f5;
 
   --success: #16a34a;
   --success-bg: #ecfdf3;
@@ -60,6 +63,7 @@
 
   --color-navy: var(--navy);
   --color-navy-foreground: var(--navy-foreground);
+  --color-navy-accent: var(--navy-accent);
 
   --color-success: var(--success);
   --color-success-bg: var(--success-bg);
@@ -92,10 +96,25 @@
   --radius-xl: calc(var(--radius) * 1.4);
 
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
 }
 
 body {
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Hind Siliguri is listed after Inter so Latin keeps Inter's shapes and
+     only Bengali falls through to it, rather than the browser picking
+     whatever the device happens to ship. */
+  font-family: var(--font-sans), var(--font-bengali), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Headings carry the brand. Outfit is wider and more geometric than Inter,
+   and negative tracking is what stops large type looking loose — it is the
+   single biggest difference between type that reads as considered and type
+   that reads as default. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), var(--font-bengali), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.03em;
 }
 
 @layer base {

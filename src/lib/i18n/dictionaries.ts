@@ -35,12 +35,12 @@ const en = {
     heroTitle: "Transform Transit into",
     heroTitleAccent: "Trust",
     heroSubtitle:
-      "Send a package with a verified traveller already heading your way — or earn from the luggage space you aren't using. Cheaper than courier, tracked end to end, and your payment is held safely until delivery.",
+      "Send a package with a verified traveller whose trip is already planned — or earn from the luggage space you aren't using. Cheaper than courier, tracked end to end, and your payment is held safely until delivery.",
     howItWorks: "How it works",
     howItWorksSubtitle:
       "Travellers have unused luggage space. Package owners have things to move across borders. We connect the two — safely, and for a fraction of courier prices.",
     sendingTitle: "Receiving a package?",
-    sendingBody: "Find a verified traveller already heading your way and get it delivered for less.",
+    sendingBody: "Find a verified traveller whose trip is already planned and get it delivered for less.",
     sendingCta: "Find a Traveller",
     travellingTitle: "Travelling soon?",
     travellingBody: "Post your trip, carry a package on your route, and earn from space you aren't using.",
@@ -59,7 +59,7 @@ const en = {
     ownersEyebrow: "For Package Owners",
     ownersTitle: "Receive with Peace of Mind",
     ownersBody:
-      "Get your package delivered by a real traveller already heading your way — faster and cheaper than traditional couriers, with your payment protected until it arrives.",
+      "Get your package delivered by a real traveller whose trip is already planned — faster and cheaper than traditional couriers, with your payment protected until it arrives.",
     ownersBullet1: "Faster than courier",
     ownersBullet2: "Save money",
     ownersBullet3: "Payment held until delivery",
@@ -432,12 +432,12 @@ const bn: Dictionary = {
     heroTitle: "ভ্রমণকে পরিণত করুন",
     heroTitleAccent: "বিশ্বাসে",
     heroSubtitle:
-      "আপনার পথেই যাচ্ছেন এমন যাচাইকৃত ভ্রমণকারীর মাধ্যমে প্যাকেজ পাঠান — অথবা আপনার অব্যবহৃত লাগেজ স্পেস থেকে আয় করুন। কুরিয়ারের চেয়ে সাশ্রয়ী, শুরু থেকে শেষ পর্যন্ত ট্র্যাকযোগ্য, এবং ডেলিভারি না হওয়া পর্যন্ত আপনার টাকা নিরাপদে জমা থাকে।",
+      "যাঁর ভ্রমণ আগে থেকেই পরিকল্পিত, এমন যাচাইকৃত ভ্রমণকারীর মাধ্যমে প্যাকেজ পাঠান — অথবা আপনার অব্যবহৃত লাগেজ স্পেস থেকে আয় করুন। কুরিয়ারের চেয়ে সাশ্রয়ী, শুরু থেকে শেষ পর্যন্ত ট্র্যাকযোগ্য, এবং ডেলিভারি না হওয়া পর্যন্ত আপনার টাকা নিরাপদে জমা থাকে।",
     howItWorks: "কীভাবে কাজ করে",
     howItWorksSubtitle:
       "ভ্রমণকারীদের আছে অব্যবহৃত লাগেজ স্পেস। প্যাকেজ মালিকদের আছে সীমান্ত পার করানোর মতো জিনিস। আমরা দুজনকে যুক্ত করি — নিরাপদে, কুরিয়ারের ভগ্নাংশ খরচে।",
     sendingTitle: "প্যাকেজ আনাতে চান?",
-    sendingBody: "আপনার পথেই যাচ্ছেন এমন যাচাইকৃত ভ্রমণকারী খুঁজে নিন এবং কম খরচে আনান।",
+    sendingBody: "যাঁর ভ্রমণ আগে থেকেই পরিকল্পিত, এমন যাচাইকৃত ভ্রমণকারী খুঁজে নিন এবং কম খরচে আনান।",
     sendingCta: "ভ্রমণকারী খুঁজুন",
     travellingTitle: "শীঘ্রই ভ্রমণে যাচ্ছেন?",
     travellingBody: "আপনার ট্রিপ পোস্ট করুন, পথে একটি প্যাকেজ বহন করুন, আর অব্যবহৃত জায়গা থেকে আয় করুন।",
@@ -456,7 +456,7 @@ const bn: Dictionary = {
     ownersEyebrow: "প্যাকেজ মালিকদের জন্য",
     ownersTitle: "নিশ্চিন্তে বুঝে নিন",
     ownersBody:
-      "আপনার পথেই যাচ্ছেন এমন একজন সত্যিকারের ভ্রমণকারীর মাধ্যমে প্যাকেজ আনান — প্রচলিত কুরিয়ারের চেয়ে দ্রুত ও সাশ্রয়ী, আর জিনিস না পৌঁছানো পর্যন্ত আপনার টাকা সুরক্ষিত।",
+      "যাঁর ভ্রমণ আগে থেকেই পরিকল্পিত, এমন একজন সত্যিকারের ভ্রমণকারীর মাধ্যমে প্যাকেজ আনান — প্রচলিত কুরিয়ারের চেয়ে দ্রুত ও সাশ্রয়ী, আর জিনিস না পৌঁছানো পর্যন্ত আপনার টাকা সুরক্ষিত।",
     ownersBullet1: "কুরিয়ারের চেয়ে দ্রুত",
     ownersBullet2: "খরচ কম",
     ownersBullet3: "ডেলিভারি পর্যন্ত টাকা সুরক্ষিত",
