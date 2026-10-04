@@ -31,7 +31,7 @@ export function ExploreMenu({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary focus:outline-none">
+      <DropdownMenuTrigger className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors duration-150 hover:bg-surface-muted hover:text-primary focus:outline-none data-[state=open]:bg-surface-muted data-[state=open]:text-primary">
         {label}
         <ChevronDown className="size-3.5" />
       </DropdownMenuTrigger>

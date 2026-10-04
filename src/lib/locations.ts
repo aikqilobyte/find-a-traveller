@@ -212,3 +212,63 @@ export function citiesForCountry(country: string): string[] {
 
   return CITIES_BY_COUNTRY[key].map(([city]) => city);
 }
+
+/**
+ * ISO 3166-1 alpha-2 codes for the countries above, used to show a flag
+ * beside a country name.
+ *
+ * Deliberately not derived from a library: this list is the set of
+ * corridors the product actually serves, so a name that is missing here is
+ * a name that should not have been selectable in the first place.
+ */
+const COUNTRY_CODES: Record<string, string> = {
+  Bangladesh: "bd",
+  "United Arab Emirates": "ae",
+  "Saudi Arabia": "sa",
+  Qatar: "qa",
+  Kuwait: "kw",
+  Oman: "om",
+  Bahrain: "bh",
+  India: "in",
+  Pakistan: "pk",
+  "United Kingdom": "gb",
+  "United States": "us",
+  Canada: "ca",
+  Malaysia: "my",
+  Singapore: "sg",
+  Thailand: "th",
+  Australia: "au",
+  Turkey: "tr",
+  Germany: "de",
+  France: "fr",
+  Italy: "it",
+  Spain: "es",
+  Netherlands: "nl",
+  Sweden: "se",
+  Ireland: "ie",
+  Switzerland: "ch",
+  Belgium: "be",
+  Portugal: "pt",
+  Japan: "jp",
+  "South Korea": "kr",
+  China: "cn",
+  Indonesia: "id",
+  Philippines: "ph",
+  Vietnam: "vn",
+  Nepal: "np",
+  "Sri Lanka": "lk",
+  Maldives: "mv",
+  Egypt: "eg",
+  "South Africa": "za",
+  Kenya: "ke",
+  Nigeria: "ng",
+  Brazil: "br",
+  Russia: "ru",
+  "New Zealand": "nz",
+};
+
+/** Lower-case ISO code for a country name, or null if it is not one we serve. */
+export function countryCode(country: string | null | undefined): string | null {
+  if (!country) return null;
+  return COUNTRY_CODES[country.trim()] ?? null;
+}

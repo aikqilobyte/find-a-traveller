@@ -1,4 +1,5 @@
-import { Globe, ShieldCheck, UserRound } from "lucide-react";
+import { ShieldCheck, UserRound } from "lucide-react";
+import { CountryFlag } from "@/components/common/country-flag";
 import { getDictionary } from "@/lib/i18n";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RatingStars } from "@/components/marketplace/rating-stars";
@@ -61,7 +62,7 @@ export async function PartyIdentity({
           <RatingStars rating={profile?.average_rating ?? 0} reviews={profile?.total_reviews ?? 0} />
           {profile?.country && (
             <span className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Globe className="size-3" />
+              <CountryFlag country={profile.country} />
               {profile.country}
             </span>
           )}
