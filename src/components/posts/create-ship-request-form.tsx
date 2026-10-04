@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { createShipRequest } from "@/lib/actions/ship-requests";
+import { createGuestShipRequest } from "@/lib/actions/guest-posts";
 import type { ActionResult } from "@/lib/actions/bookings";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,11 +15,56 @@ import { SubmitButton } from "@/components/common/submit-button";
 import { TRANSPORT_TYPES } from "@/lib/constants";
 import type { Category } from "@/lib/types/database";
 
-export function CreateShipRequestForm({ categories }: { categories: Category[] }) {
-  const [state, formAction] = useActionState<ActionResult | null, FormData>(createShipRequest, null);
+/**
+ * The same form serves signed-in and signed-out posters. Keeping one copy
+ * means a field added for one is never missing from the other — the shape
+ * of a request should not depend on whether somebody happened to be
+ * logged in when they wrote it.
+ */
+export function CreateShipRequestForm({
+  categories,
+  guest = false,
+}: {
+  categories: Category[];
+  guest?: boolean;
+}) {
+  const [state, formAction] = useActionState<ActionResult | null, FormData>(
+    guest ? createGuestShipRequest : createShipRequest,
+    null,
+  );
+
+  // A guest has no dashboard to be redirected to, so the confirmation has
+  // to happen here.
+  if (guest && state && "success" in state) {
+    return (
+      <div className="rounded-2xl border border-border bg-surface p-6 text-center">
+        <h2 className="text-lg font-semibold text-foreground">Your request is posted</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          We have emailed you a link to manage it. Travellers can make offers right away, and that
+          link is how you read them — no password needed.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <form action={formAction} className="space-y-6 rounded-2xl border border-border bg-surface p-6">
+      {guest && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="fullName">Your name</Label>
+            <Input id="fullName" name="fullName" required minLength={2} placeholder="Your full name" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="email">Your email</Label>
+            <Input id="email" name="email" type="email" required placeholder="you@example.com" />
+            <p className="text-xs text-muted-foreground">
+              Where offers on this request are sent.
+            </p>
+          </div>
+        </div>
+      )}
+
       <RouteFields />
 
       <div className="space-y-1.5">
@@ -99,14 +145,20 @@ export function CreateShipRequestForm({ categories }: { categories: Category[] }
         </p>
       )}
 
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <SubmitButton name="intent" value="publish" className="flex-1" pendingText="Publishing...">
-          Publish Request
+      {guest ? (
+        <SubmitButton name="intent" value="publish" className="w-full" pendingText="Posting...">
+          Post Request
         </SubmitButton>
-        <Button type="submit" name="intent" value="draft" variant="outline" className="flex-1">
-          Save as Draft
-        </Button>
-      </div>
+      ) : (
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <SubmitButton name="intent" value="publish" className="flex-1" pendingText="Publishing...">
+            Publish Request
+          </SubmitButton>
+          <Button type="submit" name="intent" value="draft" variant="outline" className="flex-1">
+            Save as Draft
+          </Button>
+        </div>
+      )}
     </form>
   );
 }

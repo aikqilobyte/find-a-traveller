@@ -35,3 +35,9 @@ export const createShipRequestSchema = z.object({
   notes: z.string().optional(),
   categoryIds: z.array(z.string().uuid()).default([]),
 });
+
+/** Who to attribute a guest post to, and where to send its offers. */
+export const guestPosterSchema = z.object({
+  fullName: z.string().trim().min(2, "Enter your name"),
+  email: z.string().trim().toLowerCase().email("Enter a valid email address"),
+});
