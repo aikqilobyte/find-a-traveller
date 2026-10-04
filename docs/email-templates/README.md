@@ -26,6 +26,16 @@ and open the mail on their phone, where that cookie does not exist, and the conf
 `{{ .TokenHash }}` carries its own proof, so the link works from whichever device opened the message.
 `/auth/callback` accepts both.
 
+## Why the domain is hardcoded
+
+These links name `https://app.tripshipr.com` outright rather than using `{{ .SiteURL }}` or letting the
+app supply a redirect. Both of those resolve at send time from the environment of whichever server
+handled the request, and a wrong answer there is invisible until a real person clicks a link to their
+own machine. We chased exactly that for several rounds. A literal domain cannot resolve to localhost.
+
+The cost is that a signup started on a local dev server also mails a link to production. Test auth
+locally by confirming the user through the Supabase dashboard instead.
+
 ## Site URL must be correct, or none of this matters
 
 `{{ .SiteURL }}` is **Authentication → URL Configuration → Site URL** in the Supabase dashboard, and
