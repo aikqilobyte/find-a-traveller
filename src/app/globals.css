@@ -110,6 +110,33 @@ body {
    and negative tracking is what stops large type looking loose — it is the
    single biggest difference between type that reads as considered and type
    that reads as default. */
+/* The page darkens at the top and lightens as it runs down.
+   Two chained gradients rather than one across the whole page: a single
+   gradient stretched over a long document leaves mid-blue behind the body
+   copy, where dark text stops being readable. The hero resolves to the
+   same tone the page below it starts from, so the join is invisible. */
+.hero-gradient {
+  background-image: linear-gradient(
+    to bottom,
+    #021d44 0%,
+    #042a5c 42%,
+    #0a3f7a 66%,
+    #4a7fb5 84%,
+    #a9c6e2 94%,
+    var(--surface-muted) 100%
+  );
+}
+
+.page-gradient {
+  background-image: linear-gradient(
+    to bottom,
+    var(--surface-muted) 0%,
+    color-mix(in srgb, var(--surface-muted) 55%, var(--background)) 22%,
+    var(--background) 55%,
+    var(--background) 100%
+  );
+}
+
 h1,
 h2,
 h3 {
