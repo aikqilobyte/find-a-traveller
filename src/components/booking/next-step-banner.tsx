@@ -13,10 +13,12 @@ export function NextStepBanner({
   booking,
   viewerRole,
   isMyTurn,
+  stripeEnabled = false,
 }: {
   booking: Booking;
   viewerRole: "shopper" | "traveller";
   isMyTurn: boolean;
+  stripeEnabled?: boolean;
 }) {
   const isReceiver = viewerRole === "shopper";
   const insuranceDecided = !!booking.insurance_opted || !!booking.liability_acknowledged;
@@ -49,6 +51,7 @@ export function NextStepBanner({
               bookingId={booking.id}
               totalCents={booking.total_cents}
               currency={booking.currency}
+              stripeEnabled={stripeEnabled}
             />
           ) : (
             <p className="text-xs text-muted-foreground">

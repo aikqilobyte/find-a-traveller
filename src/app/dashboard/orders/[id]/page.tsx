@@ -14,6 +14,7 @@ import { StatusBadge } from "@/components/marketplace/status-badge";
 import { OrderTimeline } from "@/components/booking/order-timeline";
 import { OfferNegotiation } from "@/components/booking/offer-negotiation";
 import { PayNowButton } from "@/components/booking/pay-now-button";
+import { isStripeConfigured } from "@/lib/payments/stripe";
 import { PickupDialog } from "@/components/booking/pickup-dialog";
 import { DeliveryFlow } from "@/components/booking/delivery-flow";
 import { InsuranceStep } from "@/components/booking/insurance-step";
@@ -53,6 +54,8 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
 
   const messages = conversationId ? await getMessagesForConversation(conversationId) : [];
   const viewerRole: "shopper" | "traveller" = booking.shopper_id === profile.id ? "shopper" : "traveller";
+  // Read server-side: the secret key must never reach the browser.
+  const stripeEnabled = isStripeConfigured();
   const otherParty = viewerRole === "shopper" ? booking.traveller : booking.shopper;
   const myReview = reviews.find((r) => r.reviewer_id === profile.id);
   const route = booking.traveller_post ?? booking.ship_request;
@@ -131,7 +134,12 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 <PartyIdentity profile={otherParty} revealed={identityRevealed} />
                 {!identityRevealed && <IdentityHiddenNote className="max-w-xs" />}
               </div>
-              <NextStepBanner booking={booking} viewerRole={viewerRole} isMyTurn={isMyTurn} />
+              <NextStepBanner
+                booking={booking}
+                viewerRole={viewerRole}
+                isMyTurn={isMyTurn}
+                stripeEnabled={stripeEnabled}
+              />
               <ChatWindow conversationId={conversationId} currentUserId={profile.id} initialMessages={messages} t={t.marketplace} />
             </div>
           )}
@@ -191,7 +199,12 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                   liabilityAcknowledged={booking.liability_acknowledged ?? false}
                 />
                 {booking.insurance_opted || booking.liability_acknowledged ? (
-                  <PayNowButton bookingId={booking.id} totalCents={booking.total_cents} currency={booking.currency} />
+                  <PayNowButton
+                    bookingId={booking.id}
+                    totalCents={booking.total_cents}
+                    currency={booking.currency}
+                    stripeEnabled={stripeEnabled}
+                  />
                 ) : (
                   <p className="text-xs text-muted-foreground">
                     Choose an insurance option above to continue to payment.

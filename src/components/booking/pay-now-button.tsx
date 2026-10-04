@@ -2,17 +2,35 @@
 
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { createPaymentIntent, confirmTestPayment } from "@/lib/actions/payments";
+import { startCheckout } from "@/lib/actions/payments";
 import { Button } from "@/components/ui/button";
 import { formatCents } from "@/lib/money";
 
-export function PayNowButton({ bookingId, totalCents, currency }: { bookingId: string; totalCents: number; currency: string }) {
+/**
+ * The button does not know which payment provider is running. The action
+ * either returns a URL to send the payer to, or settles a simulated
+ * charge — so configuring Stripe changes behaviour without touching the
+ * UI, and removing the keys does not break the booking flow.
+ */
+export function PayNowButton({
+  bookingId,
+  totalCents,
+  currency,
+  stripeEnabled,
+}: {
+  bookingId: string;
+  totalCents: number;
+  currency: string;
+  stripeEnabled: boolean;
+}) {
   const [isPending, startTransition] = useTransition();
 
   return (
     <div className="space-y-2">
       <p className="rounded-lg bg-warning-bg px-3 py-2 text-xs text-warning">
-        Test mode — no real charge will be made. In production this uses Stripe (see .env.example).
+        {stripeEnabled
+          ? "Test mode — use card 4242 4242 4242 4242, any future expiry and any CVC. No real charge is made."
+          : "Test mode — no real charge will be made. Add Stripe keys to use a real checkout."}
       </p>
       <Button
         size="lg"
@@ -20,21 +38,23 @@ export function PayNowButton({ bookingId, totalCents, currency }: { bookingId: s
         disabled={isPending}
         onClick={() =>
           startTransition(async () => {
-            const intent = await createPaymentIntent(bookingId);
-            if ("error" in intent) {
-              toast.error(intent.error);
+            const result = await startCheckout(bookingId);
+
+            if ("error" in result) {
+              toast.error(result.error);
               return;
             }
-            const confirmed = await confirmTestPayment(intent.payment.id, bookingId);
-            if ("error" in confirmed) {
-              toast.error(confirmed.error);
+
+            if ("url" in result && result.url) {
+              window.location.assign(result.url);
               return;
             }
+
             toast.success("Payment successful");
           })
         }
       >
-        {isPending ? "Processing..." : `Pay ${formatCents(totalCents, currency)} (Test Mode)`}
+        {isPending ? "Processing..." : `Pay ${formatCents(totalCents, currency)}`}
       </Button>
     </div>
   );
