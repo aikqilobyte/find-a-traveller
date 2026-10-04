@@ -11,7 +11,7 @@ export const createTravellerPostSchema = z.object({
   tripType: z.enum(["one_way", "round_way"]),
   transportType: z.enum(["plane", "train", "bus", "car"]),
   capacityKg: z.coerce.number().positive("Enter available capacity"),
-  pricePerKgCents: z.coerce.number().int().positive("Enter a price per kg"),
+  pricePerKgUsd: z.coerce.number().positive("Enter a price per kg").transform(unitsToCents),
   notes: z.string().optional(),
   rules: z.string().optional(),
   insuranceInfo: z.string().optional(),

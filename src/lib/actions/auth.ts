@@ -30,7 +30,7 @@ export async function signUp(_prev: ActionResult | null, formData: FormData): Pr
     password: parsed.data.password,
     options: {
       data: { full_name: parsed.data.fullName },
-      emailRedirectTo: `${await getSiteUrl()}/auth/callback?next=/login%3Fconfirm=1`,
+      emailRedirectTo: `${await getSiteUrl()}/auth/callback?next=/dashboard`,
     },
   });
 

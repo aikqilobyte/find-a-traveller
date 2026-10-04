@@ -21,7 +21,7 @@ export const FEATURES = {
    * /traveller/[id], /traveller/[id]/book) is deliberately NOT behind
    * this flag — that is core shipping.
    */
-  bagSpacePosting: false,
+  bagSpacePosting: true,
 
   /**
    * Travel Buddy. The routes and components were removed in an earlier

@@ -68,8 +68,19 @@ export function CreateLuggagePostForm({ categories }: { categories: Category[] }
           <Input id="capacityKg" name="capacityKg" type="number" step="0.1" min={0.5} required placeholder="e.g. 19" />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="pricePerKgCents">Charge per kg (in cents)</Label>
-          <Input id="pricePerKgCents" name="pricePerKgCents" type="number" min={1} required placeholder="e.g. 1000 = $10.00" />
+          <Label htmlFor="pricePerKgUsd">Charge per kg (USD)</Label>
+          <Input
+            id="pricePerKgUsd"
+            name="pricePerKgUsd"
+            type="number"
+            min={0.01}
+            step="0.01"
+            required
+            placeholder="10.00"
+          />
+          <p className="text-xs text-muted-foreground">
+            What a package owner pays you for each kilo they send.
+          </p>
         </div>
       </div>
 
